@@ -1,5 +1,6 @@
 <script>
     import Button from "./button.svelte";
+    import { Howl } from "howler";
 
     /** @type {any[]} */
     export var dialog;
@@ -42,6 +43,7 @@
                 if(d.buttons && activeButton > d.buttons.length - 1) activeButton = d.buttons.length - 1;
                 break;
             case "Enter":
+            case "Space":
                 select(activeButton);
                 break;
         }
@@ -59,6 +61,9 @@
     var success = false;
     $: success = d.flags && d.flags.includes("success");
 
+    var successSound = new Howl({
+        src: "/sound/success.wav"
+    });
     var textElement;
     $: {
         if(textElement) {
@@ -66,6 +71,9 @@
             textElement.classList.remove("animate");
             void textElement.offsetWidth;
             textElement.classList.add("animate");
+        }
+        if(success) {
+            successSound.play();
         }
     }
 </script>
@@ -119,6 +127,7 @@
         text-align: center;
         margin: 15px auto;
         text-shadow: 0 0 6px white;
+        animation: shadowAppear .4s ease-out;
     }
     h2::before, h2::after {
         position: absolute;
@@ -130,34 +139,44 @@
         transform: translateY(-50%);
     }
     h2::before {
-        animation: successLeft .4s;
+        animation: successLeft .4s, appear .2s;
         animation-timing-function: ease-out;
+        animation-delay: .2s, 0;
     }
     h2::after {
-        animation: successRight .4s;
+        animation: successRight .4s, appear .2s;
         animation-timing-function: ease-out;
+        animation-delay: .2s, 0;
+    }
+    @keyframes shadowAppear {
+        0% {
+            text-shadow: 0 0 20px white;
+        }
+        100% {
+            text-shadow: 0 0 6px white;
+        }
     }
     @keyframes successLeft {
         0% {
-            left: 50%;
+            left: 40%;
             width: 100px;
-            height: 10px;
+            height: 15px;
         }
         100% {
             left: -60px;
-            width: 50px;
+            width: 100px;
             height: 2px;
         }
     }
     @keyframes successRight {
         0% {
-            right: 50%;
+            right: 40%;
             width: 100px;
-            height: 10px;
+            height: 15px;
         }
         100% {
             right: -60px;
-            width: 50px;
+            width: 100px;
             height: 2px;
         }
     }
@@ -199,6 +218,6 @@
     }
     .background .character {
         height: 100%;
-        bottom: -30px;
+        bottom: 0px;
     }
 </style>
