@@ -1,8 +1,9 @@
 <script>
-    export var self;
+    export var active = false;
+    export var self = null;
 </script>
 
-<div class="button" on:click tabindex="-1" bind:this={self}>
+<div class="button" on:click tabindex="-1" bind:this={self} class:active>
     <slot />
 </div>
 
@@ -19,15 +20,16 @@
         text-align: center;
         background-position-x: center;
         cursor: pointer;
-        opacity: 0.7;
+        opacity: 0.8;
         margin-top: 15px;
         margin-bottom: 15px;
         transition: opacity .3s, margin .3s, transform .3s;
     }
-    .button:first-child:hover, .button:first-child:focus {
+    .button:first-child:hover, .button:first-child:focus, .button:first-child.active {
         margin-top: 15px;
     }
-    .button:hover, .button:focus {
+    .button:hover, .button:focus, .button.active {
+        outline: none;
         opacity: 1;
         margin-top: 5px;
         margin-bottom: 5px;

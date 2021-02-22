@@ -1,6 +1,7 @@
 <script>
-import Button from "./button.svelte";
+    import Button from "./button.svelte";
 
+    /** @type {any[]} */
     export var dialog;
     export var current;
     /** @type {any[]} */
@@ -15,7 +16,61 @@ import Button from "./button.svelte";
 
     var art;
     $: art = d.character_art || d.pose ? character.poses[d.pose] : character.art;
+
+    var activeButton = -1;
+    function select(i) {
+        var next;
+        if(d.buttons) {
+            if(!d.buttons[i]) return;
+            next = dialog.findIndex(t => t.name === d.buttons[i].next);
+        } else {
+            next = dialog.findIndex(t => t.name === d.next);
+        }
+        if(next === -1) return;
+        current = next;
+        localStorage.setItem("dialog-page", next);
+    }
+
+    function keydown(e) {
+        switch(e.key) {
+            case "ArrowUp":
+                activeButton--;
+                if(activeButton < 0) activeButton = 0;
+                break;
+            case "ArrowDown":
+                activeButton++;
+                if(d.buttons && activeButton > d.buttons.length - 1) activeButton = d.buttons.length - 1;
+                break;
+            case "Enter":
+                select(activeButton);
+                break;
+        }
+    }
+    function reset() {
+        activeButton = -1;
+    }
+    var buttons;
+    function next(e) {
+        if(e.path.includes(buttons)) return;
+        reset();
+        select();
+    }
+
+    var success = false;
+    $: success = d.flags && d.flags.includes("success");
+
+    var textElement;
+    $: {
+        if(textElement) {
+            d; // everytime d is changed
+            textElement.classList.remove("animate");
+            void textElement.offsetWidth;
+            textElement.classList.add("animate");
+        }
+    }
 </script>
+
+<svelte:window on:keydown={keydown} on:mousemove={reset} on:click={next} />
 
 <div class="dialog">
     <div class="background">
@@ -24,12 +79,17 @@ import Button from "./button.svelte";
     </div>
     <div class="text">
         <h1>{character.name}, {character.title}</h1>
-        <p>{d.text}</p>
-        <div class="buttons">
-            {#each d.buttons as button}
-                <Button>{button.text}</Button>
-            {/each}
+        <p class="animate" bind:this={textElement}>{d.text}</p>
+        <div class="buttons" bind:this={buttons}>
+            {#if d.buttons}
+                {#each d.buttons as button, i}
+                    <Button active={i === activeButton} on:click={() => select(i)}>{button.text}</Button>
+                {/each}
+            {/if}
         </div>
+        {#if success}
+            <h2>SUCCESS</h2>
+        {/if}
     </div>
 </div>
 
@@ -50,11 +110,73 @@ import Button from "./button.svelte";
         text-align: center;
         letter-spacing: 2px;
     }
+    h2 {
+        position: relative;
+        width: 400px;
+        color: white;
+        font-size: 70px;
+        letter-spacing: 12px;
+        text-align: center;
+        margin: 15px auto;
+        text-shadow: 0 0 6px white;
+    }
+    h2::before, h2::after {
+        position: absolute;
+        content: "";
+        background: white;
+        box-shadow: 0 0 15px white;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    h2::before {
+        animation: successLeft .4s;
+        animation-timing-function: ease-out;
+    }
+    h2::after {
+        animation: successRight .4s;
+        animation-timing-function: ease-out;
+    }
+    @keyframes successLeft {
+        0% {
+            left: 50%;
+            width: 100px;
+            height: 10px;
+        }
+        100% {
+            left: -60px;
+            width: 50px;
+            height: 2px;
+        }
+    }
+    @keyframes successRight {
+        0% {
+            right: 50%;
+            width: 100px;
+            height: 10px;
+        }
+        100% {
+            right: -60px;
+            width: 50px;
+            height: 2px;
+        }
+    }
     p {
         margin: 0;
         text-align: center;
         font-size: 25px;
         font-weight: 600;
+    }
+    .animate {
+        animation: appear .3s;
+    }
+    @keyframes appear {
+        from {
+            transform: scale(0.7);
+        }
+        to {
+            transform: scale(1);
+        }
     }
     .text {
         max-width: 700px;
