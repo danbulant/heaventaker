@@ -43,7 +43,7 @@
                 if(d.buttons && activeButton > d.buttons.length - 1) activeButton = d.buttons.length - 1;
                 break;
             case "Enter":
-            case "Space":
+            case " ":
                 select(activeButton);
                 break;
         }
