@@ -14,6 +14,7 @@ export const dialog = [{
     name: "michael_success",
     background: "/sprite/backg.png",
     character: "Michael",
+    pose: "happy",
     text: "Really? Well, big man: if you survive this whole ordeal, prepare a room and we shall see how into this shit you really are",
     flags: ["success"],
     next: "michael_heretic"

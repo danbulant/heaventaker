@@ -136,7 +136,7 @@
         box-shadow: 0 0 15px white;
         border-radius: 50%;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translate(-50%, -50%);
     }
     h2::before {
         animation: successLeft .4s, appear .2s;
