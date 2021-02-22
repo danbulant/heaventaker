@@ -24,6 +24,7 @@
         width: 100vw;
         height: 100vh;
         transition: top .2s;
+        overflow: auto;
     }
     .main.active {
         height: 100%;

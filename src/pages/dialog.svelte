@@ -86,8 +86,10 @@
         <img src={art} alt="" class="character" draggable={false}>
     </div>
     <div class="text">
-        <h1>{character.name}, {character.title}</h1>
-        <p class="animate" bind:this={textElement}>{d.text}</p>
+        <div class="data">
+            <h1>{character.name}, {character.title}</h1>
+            <p class="animate" bind:this={textElement}>{d.text}</p>
+        </div>
         <div class="buttons" bind:this={buttons}>
             {#if d.buttons}
                 {#each d.buttons as button, i}
@@ -198,13 +200,17 @@
         }
     }
     .text {
-        max-width: 700px;
+        max-width: 900px;
         margin: 0 auto;
+    }
+    .data {
+        margin: 0 auto;
+        max-width: 700px;
     }
     .background {
         position: relative;
-        height: 70%;
-        width: 100%;
+        height: 70vh;
+        width: 100vw;
         overflow: hidden;
     }
     .background img {

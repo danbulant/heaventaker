@@ -9,21 +9,40 @@
 
 <style>
     .button {
-        width: 415px;
+        max-width: 700px;
         position: relative;
-        margin: auto;
         font-size: 25px;
-        background: url("/sprite/button.png");
-        background-size: contain;
-        background-repeat: no-repeat;
+        background: url("/sprite/button2.png");
+        background-size: auto 100%;
+        background-repeat: repeat-x;
         padding: 5px 70px;
         text-align: center;
         background-position-x: center;
         cursor: pointer;
         opacity: 0.8;
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin: 15px auto;
         transition: opacity .3s, margin .3s, transform .3s;
+    }
+    .button:before {
+        content: "";
+        height: 43px;
+        width: 64px;
+        background: url("/sprite/button1.png");
+        background-size: contain;
+        left: -64px;
+        top: 0;
+        position: absolute;
+    }
+    .button:after {
+        content: "";
+        height: 43px;
+        width: 64px;
+        background: url("/sprite/button1.png");
+        background-size: contain;
+        right: -64px;
+        top: 0;
+        position: absolute;
+        transform: scaleX(-1);
     }
     .button:first-child:hover, .button:first-child:focus, .button:first-child.active {
         margin-top: 15px;
@@ -34,5 +53,8 @@
         margin-top: 5px;
         margin-bottom: 5px;
         transform: scale(1.2);
+    }
+    .button.button:last-child {
+        margin-bottom: 0;
     }
 </style>

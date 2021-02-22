@@ -8,16 +8,17 @@
 	var page = "game";
 	var current = localStorage.getItem("dialog-page") || 0;
 
-	var preloads = [];
+	var preloads = new Map;
+	function preload(url) {
+		if(preloads.has(url)) return;
+		preloads.set(url, new Image);
+		preloads.get(url).src = url;
+	}
 	for(let character of characters) {
-		var img = new Image();
-		img.src = character.art; // preload art
-		preloads.push(img);
+		preload(character.art); // preload art
 	}
 	for(let d of dialog) {
-		var img = new Image();
-		img.src = d.background; // preload art
-		preloads.push(img);
+		preload(d.background); // preload art
 	}
 
 	var music = new Howl({
