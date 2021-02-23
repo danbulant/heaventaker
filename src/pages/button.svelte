@@ -12,7 +12,7 @@
         max-width: 700px;
         position: relative;
         font-size: 25px;
-        background: url("/sprite/button2.png");
+        background: url("/sprite/button2.webp");
         background-size: auto 100%;
         background-repeat: repeat-x;
         padding: 5px 70px;
@@ -27,7 +27,7 @@
         content: "";
         height: 43px;
         width: 64px;
-        background: url("/sprite/button1.png");
+        background: url("/sprite/button1.webp");
         background-size: contain;
         left: -64px;
         top: 0;
@@ -37,7 +37,7 @@
         content: "";
         height: 43px;
         width: 64px;
-        background: url("/sprite/button1.png");
+        background: url("/sprite/button1.webp");
         background-size: contain;
         right: -64px;
         top: 0;

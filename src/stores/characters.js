@@ -1,18 +1,18 @@
 export const characters = [{
     name: "Michael",
-    art: "/sprite/michael_normal.png",
+    art: "/sprite/michael_normal.webp",
     title: "the high marshal",
     poses: {
-        wings: "/sprite/michael_wings.png",
-        happy: "/sprite/michael_happy.png"
+        wings: "/sprite/michael_wings.webp",
+        happy: "/sprite/michael_happy.webp"
     }
 }, {
     name: "Uriel",
-    art: "/sprite/uriel_normal.png",
+    art: "/sprite/uriel_normal.webp",
     title: "the gate guardian",
     poses: {
-        side_normal: "/sprite/uriel_side_normal.png",
-        side_happy: "/sprite/uriel_side_happy.png",
-        bat: "/sprite/uriel_bat.png"
+        side_normal: "/sprite/uriel_side_normal.webp",
+        side_happy: "/sprite/uriel_side_happy.webp",
+        bat: "/sprite/uriel_bat.webp"
     }
 }];

@@ -2,7 +2,7 @@
 
 A fan-made game inspired by Helltaker. Art by u/hohodo.
 
-![Characters](images/characters.png)
+![Characters](public/sprite/characters.webp)
 
 ## Play it
 

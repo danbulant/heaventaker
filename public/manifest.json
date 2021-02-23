@@ -1,0 +1,29 @@
+{
+    "short_name": "Heaventaker",
+    "name": "Heaventaker",
+    "icons": [
+      {
+        "src": "/icon_192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/icon.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/?source=pwa",
+    "background_color": "#333",
+    "display": "fullscreen",
+    "categories": ["games", "entertainment", "heaven"],
+    "scope": "/",
+    "theme_color": "#333",
+    "description": "Helltaker inspired holy game",
+    "orientation": "landscape",
+    "screenshots": [{
+      "src": "/sprite/characters.png",
+      "sizes": "640x381",
+      "type": "image/png"
+    }]
+  }

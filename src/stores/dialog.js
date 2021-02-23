@@ -1,6 +1,6 @@
 export const dialog = [{
     name: "uriel_entrance",
-    background: "/sprite/backg.png",
+    background: "/sprite/backg.webp",
     character: "Uriel",
     pose: "side_normal",
     text: "Ummm... I don't want to be rude so just leave or go to the main gate.",
@@ -13,27 +13,27 @@ export const dialog = [{
     }]
 }, {
     name: "uriel_restart",
-    background: "/sprite/backg.png",
+    background: "/sprite/backg.webp",
     character: "Uriel",
     text: "Really dude? Well if you insist, let's start from the beggining",
     next: "uriel_failure"
 }, {
     name: "uriel_failure", 
-    background: "/sprite/backg.png",
+    background: "/sprite/backg.webp",
     character: "Uriel",
     text: "You picked the wrong gate fool.",
     next: "uriel_entrance",
     pose: "bat"
 }, {
     name: "uriel_success",
-    background: "/sprite/backg.png",
+    background: "/sprite/backg.webp",
     character: "Uriel",
     text: "Well since it already got boring around here, and how can I say no to pancakes.",
     flags: ["success"],
     next: "michael_heretic"
 }, {
     name: "michael_heretic",
-    background: "/sprite/backg.png",
+    background: "/sprite/backg.webp",
     character: "Michael",
     text: "How did you... You know what I don't even care. Heretic like you needs to be punished.",
     buttons: [{
@@ -45,7 +45,7 @@ export const dialog = [{
     }]
 }, {
     name: "michael_success",
-    background: "/sprite/backg.png",
+    background: "/sprite/backg.webp",
     character: "Michael",
     pose: "happy",
     text: "Really? Well, big man: if you survive this whole ordeal, prepare a room and we shall see how into this shit you really are",
@@ -53,7 +53,7 @@ export const dialog = [{
     next: "uriel_entrance"
 }, {
     name: "michael_failure",
-    background: "/sprite/backg.png",
+    background: "/sprite/backg.webp",
     character: "Michael",
     text: "I also have something to offer: eat shit and die.",
     pose: "wings",
