@@ -6,7 +6,7 @@ A fan-made game inspired by Helltaker. Art by u/hohodo.
 
 ## Play it
 
-There's no website yet.
+Dev version available [here](https://heaventaker.danbulant.eu).
 
 ## License
 
