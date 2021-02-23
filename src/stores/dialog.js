@@ -23,6 +23,7 @@ export const dialog = [{
     character: "Uriel",
     text: "You picked the wrong gate fool.",
     next: "uriel_entrance",
+    flags: ["failure"],
     pose: "bat"
 }, {
     name: "uriel_success",
@@ -50,12 +51,41 @@ export const dialog = [{
     pose: "happy",
     text: "Really? Well, big man: if you survive this whole ordeal, prepare a room and we shall see how into this shit you really are",
     flags: ["success"],
-    next: "uriel_entrance"
+    next: "uziel_start"
 }, {
     name: "michael_failure",
     background: "/sprite/backg.webp",
     character: "Michael",
     text: "I also have something to offer: eat shit and die.",
     pose: "wings",
+    flags: ["failure"],
     next: "michael_heretic"
+}, {
+    name: "uziel_start",
+    background: "/sprite/backg.webp",
+    character: "Uziel",
+    text: "Hello there",
+    buttons: [{
+        text: "Failure",
+        next: "uziel_failure"
+    }, {
+        text: "Success",
+        next: "uziel_success"
+    }]
+}, {
+    name: "uziel_failure",
+    background: "/sprite/backg.webp",
+    character: "Uziel",
+    text: "You're dead",
+    next: "uziel_start",
+    flags: ["failure"],
+    pose: "dead"
+}, {
+    name: "uziel_success",
+    background: "/sprite/backg.webp",
+    character: "Uziel",
+    pose: "happy",
+    text: "You got me",
+    next: "uriel_entrance",
+    flags: ["success"]
 }];

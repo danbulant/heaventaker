@@ -15,4 +15,12 @@ export const characters = [{
         side_happy: "/sprite/uriel_side_happy.webp",
         bat: "/sprite/uriel_bat.webp"
     }
+}, {
+    name: "Uziel",
+    art: "/sprite/uziel_normal.webp",
+    title: "the chief commissar",
+    poses: {
+        happy: "/sprite/uziel_happy.webp",
+        dead: "/sprite/uziel_dead.webp"
+    }
 }];
