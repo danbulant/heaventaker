@@ -19,7 +19,7 @@
         "purpose": "maskable"
       }
     ],
-    "start_url": "/?source=pwa",
+    "start_url": "/",
     "background_color": "#333",
     "display": "fullscreen",
     "categories": ["games", "entertainment", "heaven"],
