@@ -16,7 +16,9 @@
     $: character = characters.find(c => c.name === d.character);
 
     var art;
+    $: art = d.character_art || d.pose ? character.poses[d.pose] : character.art;;
     var background;
+    $: background = d.background;
 
     function asleep(ms) {
         return new Promise((resolve) => {
