@@ -46,5 +46,5 @@
 </svelte:head>
 
 <Overlay active={gameActive}>
-	<Dialog {dialog} bind:current {characters} bind:page />
+	<Dialog bind:current {characters} bind:page />
 </Overlay>

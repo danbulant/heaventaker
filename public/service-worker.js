@@ -16,6 +16,10 @@ self.addEventListener('install', function (event) {
                     "/sprite/backg.webp",
                     "/sprite/button1.webp",
                     "/sprite/button2.webp",
+                    "/sprite/death1.webp",
+                    "/sprite/death2.webp",
+                    "/sprite/death3.webp",
+                    "/sprite/death4.webp",
 
                     "/sprite/michael_happy.webp",
                     "/sprite/michael_normal.webp",

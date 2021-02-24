@@ -1,14 +1,14 @@
 <script>
     import Button from "./button.svelte";
     import { Howl } from "howler";
+	import { dialog } from "../stores/dialog.js";
 
-    /** @type {any[]} */
-    export var dialog;
     export var current;
     /** @type {any[]} */
     export var characters;
     export var page;
 
+    /** @type {typeof dialog[number]}*/
     var d;
     $: d = dialog[current];
 
@@ -16,19 +16,51 @@
     $: character = characters.find(c => c.name === d.character);
 
     var art;
-    $: art = d.character_art || d.pose ? character.poses[d.pose] : character.art;
+    var background;
+
+    function asleep(ms) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
+    }
 
     var activeButton = -1;
     function select(i) {
+        if(!allowSwitch) return;
         var next;
         if(d.buttons) {
             if(!d.buttons[i]) return;
             next = dialog.findIndex(t => t.name === d.buttons[i].next);
         } else {
             next = dialog.findIndex(t => t.name === d.next);
+            if(d.flags && d.flags.includes("failure") && !failureShown) {
+                allowSwitch = false;
+                art = null;
+                background = null;
+                showText = false;
+                art = "/sprite/death1.webp";
+                failure = true;
+                (async() => {
+                    await asleep(200);
+                    art = "/sprite/death2.webp";
+                    await asleep(200);
+                    art = "/sprite/death3.webp";
+                    await asleep(200);
+                    art = "/sprite/death4.webp";
+                    allowSwitch = true;
+                    failureShown = true;
+                })();
+                return;
+            }
         }
         if(next === -1) return;
+        showText = true;
+        failureShown = false;
+        failure = false;
         current = next;
+        d = dialog[current];
+        art = d.character_art || d.pose ? character.poses[d.pose] : character.art;
+        background = d.background;
         localStorage.setItem("dialog-page", next);
     }
 
@@ -60,6 +92,10 @@
 
     var success = false;
     $: success = d.flags && d.flags.includes("success");
+    var allowSwitch = true;
+    var showText = true;
+    var failureShown = true;
+    var failure = false;
 
     var successSound = new Howl({
         src: "/sound/success.wav"
@@ -80,27 +116,33 @@
 
 <svelte:window on:keydown={keydown} on:mousemove={reset} on:click={next} />
 
-<div class="dialog">
+<div class="dialog" class:failure>
     <div class="background">
-        <img src={d.background} alt="" class="full" draggable={false}>
-        <img src={art} alt="" class="character" draggable={false}>
-    </div>
-    <div class="text">
-        <div class="data">
-            <h1>{character.name}, {character.title}</h1>
-            <p class="animate" bind:this={textElement}>{d.text}</p>
-        </div>
-        <div class="buttons" bind:this={buttons}>
-            {#if d.buttons}
-                {#each d.buttons as button, i}
-                    <Button active={i === activeButton} on:click={() => select(i)}>{button.text}</Button>
-                {/each}
-            {/if}
-        </div>
-        {#if success}
-            <h2>SUCCESS</h2>
+        {#if background}
+            <img src={background} alt="" class="full" draggable={false}>
+        {/if}
+        {#if art}
+            <img src={art} alt="" class="character" draggable={false}>
         {/if}
     </div>
+    {#if showText}
+        <div class="text">
+            <div class="data">
+                <h1>{character.name}, {character.title}</h1>
+                <p class="animate" bind:this={textElement}>{d.text}</p>
+            </div>
+            <div class="buttons" bind:this={buttons}>
+                {#if d.buttons}
+                    {#each d.buttons as button, i}
+                        <Button active={i === activeButton} on:click={() => select(i)}>{button.text}</Button>
+                    {/each}
+                {/if}
+            </div>
+            {#if success}
+                <h2>SUCCESS</h2>
+            {/if}
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -212,6 +254,12 @@
         height: 70vh;
         width: 100vw;
         overflow: hidden;
+    }
+    .failure .background {
+        height: 100vh;
+    }
+    .failure .background .character {
+        object-fit: scale-down;
     }
     .background img {
         position: absolute;
