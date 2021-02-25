@@ -17,6 +17,7 @@ body {
 
 @font-face {
 	font-family: 'Times New Roman W';
+	font-display: swap;
 	src: url("/times.woff2");
 }
 
