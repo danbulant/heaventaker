@@ -4,6 +4,7 @@
 	import Overlay from "./pages/overlay.svelte";
 	import { characters } from "./stores/characters.js";
 	import { dialog } from "./stores/dialog.js";
+import Game from "./pages/game.svelte";
 
 	var page = "game";
 	var current = localStorage.getItem("dialog-page") || 0;
@@ -44,6 +45,8 @@
 <svelte:head>
 	<title>Heaventaker</title>
 </svelte:head>
+
+<Game />
 
 <Overlay active={gameActive}>
 	<Dialog bind:current {characters} bind:page />
