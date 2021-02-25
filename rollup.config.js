@@ -4,6 +4,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import workbox from 'rollup-plugin-workbox';
+import replace from "@rollup/plugin-replace";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -28,7 +30,7 @@ function serve() {
 	};
 }
 
-export default {
+export default [{
 	input: 'src/main.js',
 	output: {
 		sourcemap: true,
@@ -73,4 +75,51 @@ export default {
 	watch: {
 		clearScreen: false
 	}
-};
+}, {
+	input: "src/service-worker.js",
+	output: {
+		sourcemap: true,
+		format: "iife",
+		name: "app",
+		file: "public/build/service-worker.js"
+	},
+	plugins: [
+		resolve({
+			browser: true
+		}),
+		// Generates the file list to precache in service worker
+		workbox.injectManifest({
+			swDest: "./public/build/service-worker.js",
+			swSrc: "./public/build/service-worker.js",
+			globDirectory: "./public",
+//			navigateFallback: "/",
+//			directoryIndex: "index.html",
+			globPatterns: [
+				"**.{js,css,html,png,json,woff2,wav,m4a,webp}",
+				"**/*.{js,css,html,png,json,woff2,wav,m4a,webp}",
+			],
+			manifestTransforms: [
+				manifestEntries => {
+					const manifest = manifestEntries.map(entry => {
+						entry.url = "/" + entry.url;
+						return entry;
+					});
+				  	return {manifest, warnings: []};
+				}
+			],
+			mode: production ? "production" : "development"
+		}, function render({ swDest, count, size }) {
+			console.log(
+			  'Service worker',
+			  '#️⃣', count, "files",
+			  '🐘', size, "bytes"
+			);
+		}),
+		replace({
+			values: {
+				'process.env.NODE_ENV': production ? "\"production\"" : "\"development\""
+			},
+			preventAssignment: true
+		})
+	]
+}];
