@@ -81,7 +81,7 @@ export default [{
 		sourcemap: true,
 		format: "iife",
 		name: "app",
-		file: "public/build/service-worker.js"
+		file: "public/service-worker.js"
 	},
 	plugins: [
 		resolve({
@@ -89,8 +89,8 @@ export default [{
 		}),
 		// Generates the file list to precache in service worker
 		workbox.injectManifest({
-			swDest: "./public/build/service-worker.js",
-			swSrc: "./public/build/service-worker.js",
+			swDest: "./public/service-worker.js",
+			swSrc: "./public/service-worker.js",
 			globDirectory: "./public",
 //			navigateFallback: "/",
 //			directoryIndex: "index.html",
