@@ -86,8 +86,12 @@
         activeButton = -1;
     }
     var buttons;
+    /**
+     * @argument {MouseEvent} e
+    */
     function next(e) {
-        if(e.path.includes(buttons)) return;
+        var path = e.path || (e.composedPath || (() => {[]}))();
+        if(path.includes(buttons)) return;
         reset();
         select();
     }
