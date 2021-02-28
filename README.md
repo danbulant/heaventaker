@@ -10,4 +10,6 @@ Dev version available [here](https://heaventaker.danbulant.eu).
 
 ## License
 
-The game and art is licensed under AGPL 3. More info about the license [here](https://choosealicense.com/licenses/agpl-3.0/).
+The game code is licensed under AGPL 3. More info about the license [here](https://choosealicense.com/licenses/agpl-3.0/).
+
+Background music by Mittsies, licensed under CC-NC. Sound effects under CC-0. Sprites CC-BY-NC by hohodo.

@@ -4,7 +4,7 @@
 	import Overlay from "./pages/overlay.svelte";
 	import { characters } from "./stores/characters.js";
 	import { dialog } from "./stores/dialog.js";
-import Game from "./pages/game.svelte";
+	import Game from "./pages/game.svelte";
 
 	var page = "game";
 	var current = localStorage.getItem("dialog-page") || 0;
@@ -23,7 +23,7 @@ import Game from "./pages/game.svelte";
 	}
 
 	var music = new Howl({
-		src: "/sound/thought_patterns.m4a",
+		src: "/sound/mittsies-departure.mp3",
 		html5: true,
 		loop: true,
 		autoplay: true
@@ -46,8 +46,8 @@ import Game from "./pages/game.svelte";
 	<title>Heaventaker</title>
 </svelte:head>
 
-<Game />
+<Game bind:current />
 
 <Overlay active={gameActive}>
-	<Dialog bind:current {characters} bind:page />
+	<Dialog bind:current page />
 </Overlay>

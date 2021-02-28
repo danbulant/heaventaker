@@ -1,5 +1,6 @@
 /node_modules/
 /public/build/
+/build_cache/
 
 .DS_Store
 /public/service-worker.js

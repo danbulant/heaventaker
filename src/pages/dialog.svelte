@@ -2,10 +2,9 @@
     import Button from "./button.svelte";
     import { Howl } from "howler";
 	import { dialog } from "../stores/dialog.js";
+    import { characters } from "../stores/characters.js";
 
     export var current;
-    /** @type {any[]} */
-    export var characters;
     export var page;
 
     /** @type {typeof dialog[number]}*/
@@ -90,7 +89,7 @@
      * @argument {MouseEvent} e
     */
     function next(e) {
-        var path = e.path || (e.composedPath || (() => {[]}))();
+        var path = e.composedPath();
         if(path.includes(buttons)) return;
         reset();
         select();
