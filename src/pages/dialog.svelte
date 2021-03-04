@@ -15,7 +15,7 @@
     $: character = characters.find(c => c.name === d.character);
 
     var art;
-    $: art = d.character_art || d.pose ? character.poses[d.pose] : character.art;;
+    $: art = !character ? null : d.character_art || d.pose ? character.poses[d.pose] : character.art;
     var background;
     $: background = d.background;
 
@@ -42,11 +42,11 @@
                 art = "/sprite/death1.webp";
                 failure = true;
                 (async() => {
-                    await asleep(200);
+                    await asleep(150);
                     art = "/sprite/death2.webp";
-                    await asleep(200);
+                    await asleep(150);
                     art = "/sprite/death3.webp";
-                    await asleep(200);
+                    await asleep(150);
                     art = "/sprite/death4.webp";
                     allowSwitch = true;
                     failureShown = true;
@@ -60,7 +60,7 @@
         failure = false;
         current = next;
         d = dialog[current];
-        art = d.character_art || d.pose ? character.poses[d.pose] : character.art;
+        art = !character ? null : d.character_art || d.pose ? character.poses[d.pose] : character.art;
         background = d.background;
         localStorage.setItem("dialog-page", next);
     }
@@ -133,7 +133,11 @@
     {#if showText}
         <div class="text">
             <div class="data">
-                <h1>{character.name}, {character.title}</h1>
+                {#if character}
+                    <h1>{character.name}, {character.title}</h1>
+                {:else}
+                    <h1>???</h1>
+                {/if}
                 <p class="animate" bind:this={textElement}>{d.text}</p>
             </div>
             <div class="buttons" bind:this={buttons}>
@@ -247,7 +251,7 @@
         }
     }
     .text {
-        max-width: 900px;
+        max-width: 1100px;
         margin: 0 auto;
     }
     .data {
@@ -265,6 +269,7 @@
     }
     .failure .background .character {
         object-fit: scale-down;
+        max-width: 100%;
     }
     .background img {
         position: absolute;
@@ -274,6 +279,8 @@
     }
     .background .full {
         height: 80%;
+        width: 100%;
+        object-fit: none;
     }
     .background .character {
         height: 100%;

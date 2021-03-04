@@ -5,7 +5,8 @@ export const characters = [{
     poses: {
         side_normal: "/sprite/uriel_side_normal.webp",
         side_happy: "/sprite/uriel_side_happy.webp",
-        bat: "/sprite/uriel_bat.webp"
+        bat: "/sprite/uriel_bat.webp",
+        chibi: "/sprite/uriel.gif"
     }
 }, {
     name: "Michael",
@@ -13,7 +14,8 @@ export const characters = [{
     title: "the high marshal",
     poses: {
         wings: "/sprite/michael_wings.webp",
-        happy: "/sprite/michael_happy.webp"
+        happy: "/sprite/michael_happy.webp",
+        chibi: "/sprite/uriel.gif"
     }
 }, {
     name: "Uziel",
@@ -22,5 +24,13 @@ export const characters = [{
     poses: {
         happy: "/sprite/uziel_happy.webp",
         dead: "/sprite/uziel_dead.webp"
+    }
+}, {
+    name: "Gabriel",
+    art: "/sprite/gabriel_idle.webp",
+    title: "the administrator",
+    poses: {
+        happy: "/sprite/gabriel_win.webp",
+        sad: "/sprite/gabriel_fail.webp"
     }
 }];

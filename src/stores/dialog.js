@@ -64,19 +64,19 @@ export const dialog = [{
     name: "uziel_start",
     background: "/sprite/backg.webp",
     character: "Uziel",
-    text: "Hello there",
+    text: "(she appear out of nowhere and suddenly approaches you.)",
     buttons: [{
-        text: "Failure",
+        text: "oh, you're approaching me? Had you heard of my harem proposal.",
         next: "uziel_failure"
     }, {
-        text: "Success",
+        text: "Harem of angle, yes or no ?",
         next: "uziel_success"
     }]
 }, {
     name: "uziel_failure",
     background: "/sprite/backg.webp",
     character: "Uziel",
-    text: "You're dead",
+    text: "I can't beat the living shit out of you without getting closer.",
     next: "uziel_start",
     flags: ["failure"],
     pose: "dead"
@@ -85,7 +85,46 @@ export const dialog = [{
     background: "/sprite/backg.webp",
     character: "Uziel",
     pose: "happy",
-    text: "You got me",
+    text: "That had to be the madest and stupidest thing i ever heard. Yes, i must see how this whole thing will end up.",
+    flags: ["success"],
+    next: "gabriel_start"
+}, {
+    name: "gabriel_start",
+    background: "/sprite/backg.webp",
+    character: "Gabriel",
+    text: "Hello sir. My name is Gabriel, Heaven's administration department. How may I help you?",
+    buttons: [{
+        text: "You look tired, how about let me help you instead.",
+        next: "gabriel_success"
+    }, {
+        text: "How about you ditching this job and come with me.",
+        next: "gabriel_fail"
+    }]
+}, {
+    name: "gabriel_success",
+    background: "/sprite/backg.webp",
+    character: "Gabriel",
+    text: "That... That would be lovely actually. Could you buy me some coffee? After my department got defund I can't even afford it.",
     next: "uriel_entrance",
+    pose: "happy",
     flags: ["success"]
+}, {
+    name: "gabriel_fail",
+    background: "/sprite/backg.webp",
+    character: "Gabriel",
+    text: "Oh... you looking for that type of girl, don't worry I know just the place.",
+    next: "helltaker",
+    pose: "sad"
+}, {
+    name: "helltaker",
+    background: "/sprite/gabriel_background.webp",
+    text: "...",
+    next: "helltaker2",
+    flags: ["helltaker"]
+}, {
+    name: "helltaker2",
+    background: "/sprite/gabriel_background.webp",
+    text: "What are you doing here?",
+    next: "uriel_entrance",
+    flags: ["failure"]
 }];

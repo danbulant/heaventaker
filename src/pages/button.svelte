@@ -9,13 +9,13 @@
 
 <style>
     .button {
-        max-width: 700px;
+        max-width: 800px;
         position: relative;
         font-size: 25px;
         background: url("/sprite/button2.webp");
         background-size: auto 100%;
         background-repeat: repeat-x;
-        padding: 5px 70px;
+        padding: 5px 5px;
         text-align: center;
         background-position-x: center;
         cursor: pointer;
