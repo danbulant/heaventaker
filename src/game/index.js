@@ -135,9 +135,9 @@ function animate(object, property, value, onComplete) {
  * @param {number} toY 
  * @param {Function} done 
  */
-function move(source, fromX, fromY, toX, toY, done) {
+function move(source, fromX, fromY, toX, toY, done = () => {}) {
     if(fromX !== toX) animate(source, "left", toX * mapdata.px + (mapdata.px / 2) + canvas.getWidth() / 2 - mapdata.size.x * mapdata.px / 2, done);
-    if(fromY !== toY) animate(source, "top", toY * mapdata.px + canvas.getHeight() / 2 - mapdata.size.y * mapdata.px / 2, done);
+    if(fromY !== toY) animate(source, "top", (toY + 1) * mapdata.px + canvas.getHeight() / 2 - mapdata.size.y * mapdata.px / 2, done);
     // map[toY][toX] = map[fromY][fromX];
     // map[fromY][fromX] = undefined;
 }
@@ -147,14 +147,42 @@ export function resize() {
     canvas.setHeight(htmlcanvas.parentElement.clientHeight - 7);
 }
 
+function getPieceAt(x, y) {
+    return points.get(x + "-" + y)?.piece;
+}
+
 var canMove = true;
-function tryMove(toX, toY) {
+function tryMove(toX, toY, wind = false) {
     const player = objects.get("player");
-    // if(toX > mapdata.size.x - 1 || toY > mapdata.size.y - 1 || toX < 0 || toY < 0) return;
+    if(toX > mapdata.size.x - 1 || toY > mapdata.size.y - 1 || toX < 0 || toY < 0) return;
+    var point = points.get(toX + "-" + toY);
+    if(point) {
+        if(point.piece.type !== "wind") {
+            if(!wind && point.piece.type === "lyre") {
+                points.delete(toX + "-" + toY);
+                var diff = { x: toX - position.x, y: toY - position.y };
+                points.set((toX + diff.x) + "-" + (toY + diff.y), point);
+                move(point.object, toX, toY, toX + diff.x, toY + diff.y);
+            } else return;
+        }
+    }
     if(!canMove) return;
 
     canMove = false;
-    move(player, position.x, position.y, toX, toY, () => canMove = true);
+    move(player, position.x, position.y, toX, toY, () => {
+        canMove = true;
+        if(point && point.piece.type === "wind") {
+            var res = moveInDirection(point.piece.direction);
+            tryMove(toX + res.x, toY + res.y, true);
+        } else {
+            if(getPieceAt(toX + 1, toY)?.type === "angel" || 
+                getPieceAt(toX, toY + 1)?.type === "angel" ||
+                getPieceAt(toX - 1, toY)?.type === "angel" || 
+                getPieceAt(toX, toY - 1)?.type === "angel") {
+                    console.log("found angel");
+            }
+        }
+    });
     position.x = toX;
     position.y = toY;
     console.log(position, player.left / mapdata.px, player.top / mapdata.px);
@@ -181,8 +209,8 @@ keys.addEventListener("keyDown", key => {
     }
 });
 
-function offsetRotation(rotation) {
-    switch(rotation) {
+function offsetDirection(direction) {
+    switch(direction) {
         case 1:
             return { x: 1, y: 0 };
         case 2:
@@ -190,6 +218,21 @@ function offsetRotation(rotation) {
         case 3:
             return { x: 0, y: 1 };
         case 4:
+        default:
+            return { x: 0, y: 0 };
+    }
+}
+
+function moveInDirection(direction) {
+    switch(direction) {
+        case 1:
+            return { x: 0, y: -1 };
+        case 2:
+            return { x: 1, y: 0 };
+        case 3:
+            return { x: 0, y: 1 };
+        case 4:
+            return { x: -1, y: 0 };
         default:
             return { x: 0, y: 0 };
     }
@@ -274,7 +317,7 @@ export function render(delta) {
                 continue;
             }
             var [x, y] = name.split("-");
-            var offset = offsetRotation(point.piece.direction);
+            var offset = offsetDirection(point.piece.direction);
             x = parseInt(x) + offset.x;
             y = parseInt(y) + offset.y;
             point.object.set({
@@ -287,7 +330,7 @@ export function render(delta) {
     var player = objects.get("player");
     player.set({
         left: position.x * mapdata.px + (mapdata.px / 2) + canvas.getWidth() / 2 - mapdata.size.x * mapdata.px / 2,
-        top: position.y * mapdata.px + canvas.getHeight() / 2 - mapdata.size.y * mapdata.px / 2
+        top: (position.y + 1) * mapdata.px + canvas.getHeight() / 2 - mapdata.size.y * mapdata.px / 2
     });
     for(var animation of animations) {
         animation.update();
