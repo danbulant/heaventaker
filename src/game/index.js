@@ -31,6 +31,10 @@ export function setCanvas(htmlCanvas) {
  * @type {Map<string, fabric.Object>}
  */
 const objects = new Map;
+/**
+ * @type {Map<string, { object: fabric.Object, piece: any }>}
+ */
+const points = new Map;
 
 function load() {
     objects.set("loadingText", new fabric.Text("Loading", {
@@ -132,9 +136,8 @@ function animate(object, property, value, onComplete) {
  * @param {Function} done 
  */
 function move(source, fromX, fromY, toX, toY, done) {
-    if(fromX !== toX) animate(source, "left", toX * mapdata.px + (mapdata.px / 2), done);
-    if(fromY !== toY) animate(source, "top", toY * mapdata.px + (mapdata.px / 2), done);
-    console.log(arguments);
+    if(fromX !== toX) animate(source, "left", toX * mapdata.px + (mapdata.px / 2) + canvas.getWidth() / 2 - mapdata.size.x * mapdata.px / 2, done);
+    if(fromY !== toY) animate(source, "top", toY * mapdata.px + canvas.getHeight() / 2 - mapdata.size.y * mapdata.px / 2, done);
     // map[toY][toX] = map[fromY][fromX];
     // map[fromY][fromX] = undefined;
 }
@@ -178,9 +181,28 @@ keys.addEventListener("keyDown", key => {
     }
 });
 
+function offsetRotation(rotation) {
+    switch(rotation) {
+        case 1:
+            return { x: 1, y: 0 };
+        case 2:
+            return { x: 1, y: 1 };
+        case 3:
+            return { x: 0, y: 1 };
+        case 4:
+        default:
+            return { x: 0, y: 0 };
+    }
+}
+
 var position = {
     x: 0,
     y: 0
+}
+
+var resizeDirty = true;
+window.onresize = () => {
+    resizeDirty = true;
 }
 
 var loading = true;
@@ -194,16 +216,8 @@ export function render(delta) {
             originX: "center",
             originY: "center",
         }));
-        const field = new fabric.Group([], {
-            left: canvas.getWidth() / 2 - (mapdata.offset.x / 2) - (mapdata.size.x * mapdata.px / 2),
-            top: canvas.getHeight() / 2 - (mapdata.offset.y / 2) - (mapdata.size.y * mapdata.px / 2),
-            originX: "left",
-            originY: "top",
-            width: mapdata.size.x * mapdata.px,
-            height: mapdata.size.y * mapdata.px
-        });
 
-        objects.set("field", field);
+        canvas.add(objects.get("background"));
 
         for(const y in map) {
             const pieces = map[y];
@@ -232,26 +246,19 @@ export function render(delta) {
                     object = new fabric.Image(images.get(type));
                 }
                 object.set({
-                    originX: "center",
-                    originY: "center",
-                    left: x * mapdata.px + (mapdata.px / 2),
-                    top: y * mapdata.px + (mapdata.px / 2),
+                    originX: "left",
+                    originY: "top",
+                    left: parseInt(x) * mapdata.px + (mapdata.px / 2) + canvas.getWidth() / 2 - (mapdata.offset.x / 2),
+                    top: parseInt(y) * mapdata.px + canvas.getHeight() / 2 - (mapdata.offset.y / 2) - 200,
                     angle: 90 * (piece.direction || 0)
                 });
-                console.log(object.left / mapdata.px, object.top / mapdata.px);
-                objects.set("object-" + x + "-" + y, object);
-                field.addWithUpdate(object);
+                if(piece.type !== "spawn") {
+                    points.set(x + "-" + y, { object, piece });
+                }
+                canvas.add(object);
             }
         }
-        field.set({
-            left: canvas.getWidth() / 2 - (mapdata.offset.x / 2),
-            top: canvas.getHeight() / 2 - (mapdata.offset.y / 2),
-            width: mapdata.size.x * mapdata.px,
-            height: mapdata.size.y * mapdata.px
-        });
 
-        canvas.add(objects.get("background"));
-        canvas.add(field);
         canvas.remove(objects.get("loadingText"));
     } else if(loading) return canvas.renderAll();
 
@@ -260,11 +267,27 @@ export function render(delta) {
         left: canvas.getWidth() / 2,
         top: canvas.getHeight() / 2
     });
-    /** @type {fabric.Group} */
-    var field = objects.get("field");
-    field.set({
-        left: canvas.getWidth() / 2 - (mapdata.offset.x / 2) - (mapdata.size.x * mapdata.px / 2),
-        top: canvas.getHeight() / 2 - (mapdata.offset.y / 2) - (mapdata.size.y * mapdata.px / 2) + mapdata.px / 2,
+    if(resizeDirty) {
+        for(var [name, point] of points) {
+            if(!point) {
+                console.log(name, points);
+                continue;
+            }
+            var [x, y] = name.split("-");
+            var offset = offsetRotation(point.piece.direction);
+            x = parseInt(x) + offset.x;
+            y = parseInt(y) + offset.y;
+            point.object.set({
+                left: parseInt(x) * mapdata.px + canvas.getWidth() / 2 - mapdata.size.x * mapdata.px / 2,
+                top: parseInt(y) * mapdata.px + (mapdata.px / 2) + canvas.getHeight() / 2 - mapdata.size.y * mapdata.px / 2,
+            });
+        }
+        resizeDirty = false;
+    }
+    var player = objects.get("player");
+    player.set({
+        left: position.x * mapdata.px + (mapdata.px / 2) + canvas.getWidth() / 2 - mapdata.size.x * mapdata.px / 2,
+        top: position.y * mapdata.px + canvas.getHeight() / 2 - mapdata.size.y * mapdata.px / 2
     });
     for(var animation of animations) {
         animation.update();
