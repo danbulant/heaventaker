@@ -4,6 +4,7 @@ export const dialog = [{
     character: "Uriel",
     pose: "side_normal",
     text: "Ummm... I don't want to be rude so just leave or go to the main gate.",
+    map: "uriel",
     buttons: [{
         text: "Step aside, I got heaven to conquer and angels to take.",
         next: "uriel_restart"

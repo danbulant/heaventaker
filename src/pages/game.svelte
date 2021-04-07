@@ -2,6 +2,8 @@
     import GameOverlay from "./gameOverlay.svelte";
 	import { dialog } from "../stores/dialog.js";
     import { characters } from "../stores/characters.js";
+    import { onMount } from "svelte";
+    import { setCanvas, render, setMap, resize } from "../game";
 
     export var current;
 
@@ -28,7 +30,25 @@
     }
 
     var steps = 11;
+    var canvas;
+
+    onMount(() => {
+        setMap(dialog[current].map);
+        setCanvas(canvas);
+        resize();
+        function update(delta) {
+            render(delta);
+            frame = requestAnimationFrame(update);
+        }
+        var frame = requestAnimationFrame(update);
+        return () => cancelAnimationFrame(frame);
+    });
+
+    $: setMap(dialog[current].map);
 </script>
 
+<svelte:window on:resize={resize} />
 
 <GameOverlay {steps} chapter={toRoman(characterIndex + 1)} />
+
+<canvas bind:this={canvas} />
