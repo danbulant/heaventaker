@@ -33,10 +33,12 @@
     var canvas;
 
     onMount(() => {
+        console.log("Started");
         setMap(dialog[current].map);
         setCanvas(canvas);
         resize();
         return () => {
+            console.log("Stopped");
             stop();
         }
     });

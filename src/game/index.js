@@ -40,6 +40,7 @@ export function setCanvas(canvas) {
 
 export function stop() {
     game.destroy(false);
+    gs = undefined;
 }
 
 var map;
@@ -49,7 +50,7 @@ export function setMap(newmap) {
     mapname = newmap;
     map = maps[mapname];
     if(gs) {
-        gs.unload();
+        // gs.unload();
         gs.map = map;
         gs.createMap();
     }

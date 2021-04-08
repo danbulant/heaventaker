@@ -33,8 +33,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     unload() {
-        this.grid.destroy();
-        this.background.destroy();
         this.container.destroy();
         delete this.items;
         delete this.winds;

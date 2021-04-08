@@ -3,6 +3,7 @@
     import { Howl } from "howler";
 	import { dialog } from "../stores/dialog.js";
     import { characters } from "../stores/characters.js";
+import { gameActive } from "../stores/gameActive";
 
     export var current;
     export var page;
@@ -62,6 +63,9 @@
         d = dialog[current];
         art = !character ? null : d.character_art || d.pose ? character.poses[d.pose] : character.art;
         background = d.background;
+        if(d.map) {
+            $gameActive = true;
+        }
         localStorage.setItem("dialog-page", next);
     }
 
