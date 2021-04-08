@@ -24,10 +24,10 @@ function wind(direction) {
 export const maps = {
     uriel: {
         background: "level1",
-        sprite: "/sprite/uriel.gif",
+        sprite: "uriel",
         offset: { // map offset for alignment
-            x: 90,
-            y: 0
+            x: 60,
+            y: 100
         },
         size: { // map size (per block)
             x: 5,
@@ -36,7 +36,7 @@ export const maps = {
         px: 100, // block size
         map: [
             ["barrier", "barrier", "angel"  , "barrier", "barrier"],
-            ["barrier", "barrier", null     , null     , "barrier"],
+            ["barrier", "barrier", null     , "barrier", "barrier"],
             [null     , null     , wind(1)  , null     , null     ],
             [null     , "lyre"   , wind(1)  , null     , null     ],
             ["lyre"   , null     , "cloud"  , null     , null     ],

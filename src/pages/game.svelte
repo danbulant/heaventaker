@@ -3,7 +3,7 @@
 	import { dialog } from "../stores/dialog.js";
     import { characters } from "../stores/characters.js";
     import { onMount } from "svelte";
-    import { setCanvas, render, setMap, resize } from "../game";
+    import { setCanvas, setMap, resize, stop } from "../game";
 
     export var current;
 
@@ -36,12 +36,9 @@
         setMap(dialog[current].map);
         setCanvas(canvas);
         resize();
-        function update(delta) {
-            render(delta);
-            frame = requestAnimationFrame(update);
+        return () => {
+            stop();
         }
-        var frame = requestAnimationFrame(update);
-        return () => cancelAnimationFrame(frame);
     });
 
     $: setMap(dialog[current].map);

@@ -2,7 +2,8 @@ const keybinds = {
     "right": "ArrowRight",
     "left": "ArrowLeft",
     "up": "ArrowUp",
-    "down": "ArrowDown"
+    "down": "ArrowDown",
+    "debug": "f3"
 };
 
 class KeyHandler {
@@ -21,6 +22,7 @@ class KeyHandler {
         this.addHandlers();
         this.mounted = false;
         this.mountHandlers();
+        this.keysWasPressed = new Map();
         /** @type {Map<string, Function[]>} */
         this.listeners = new Map();
     }
@@ -73,10 +75,16 @@ class KeyHandler {
     }
     addHandlers() {
         this.addDocumentEventListener("keydown", (ev) => {
-            this.pressKeyBind(ev.key);
+            if(this.pressKeyBind(ev.key)) {
+                ev.preventDefault();
+                return false;
+            };
         });
         this.addDocumentEventListener("keyup", (ev) => {
-            this.unpressKeyBind(ev.key);
+            if(this.unpressKeyBind(ev.key)) {
+                ev.preventDefault();
+                return false;
+            };
         });
         // this.addDocumentEventListener("mousemove", (ev) => {
         //     var rotation = Math.atan2(ev.pageY - window.innerHeight / 2, ev.pageX - window.innerWidth / 2) * 180 / Math.PI;
@@ -137,12 +145,14 @@ class KeyHandler {
     pressKeyBind(key) {
         var kb = this.getKeyBind(key);
         if(!kb) return null;
+        this.keysWasPressed.set(kb, true);
         this.emit("keyDown", kb);
         return this.pressKey(kb);
     }
     unpressKeyBind(key) {
         var kb = this.getKeyBind(key);
         if(!kb) return null;
+        this.keysWasPressed.delete(kb);
         this.emit("keyUp", kb);
         return this.unpressKey(kb);
     }
@@ -152,7 +162,7 @@ class KeyHandler {
         return this.setAxis(kb, value);
     }
     getKeyBind(key) {
-        var index = Object.values(keybinds).indexOf(key);
+        var index = Object.values(keybinds).map(t => t.toLowerCase()).indexOf(key.toLowerCase());
         if(index === -1) return null;
         return Object.keys(keybinds)[index];
     }
@@ -160,7 +170,13 @@ class KeyHandler {
     isKeyPressed(key) {
         return this.keys.has(key) && this.keys.get(key) > this.treshold;
     }
-
+    
+    wasKeyPressed(key) {
+        var was = this.keysWasPressed.has(key);
+        this.keysWasPressed.delete(key);
+        return was;
+    }
+    
     getAxis(key) {
         if(!this.axis.has(key)) return;
         var val = this.axis.get(key);
