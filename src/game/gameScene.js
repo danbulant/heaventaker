@@ -1,6 +1,8 @@
 import Phaser, { Animations } from "phaser";
+import { gameActive, page } from "../stores/gameActive";
 import { steps } from "../stores/step";
 import { keys } from "./input";
+import { dialog } from "../stores/dialog.js";
 
 const textureWidth = 100;
 
@@ -16,6 +18,7 @@ export class GameScene extends Phaser.Scene {
         /** @type {{
             background: string,
             sprite: string,
+            next: string,
             offset: { x: number, y: nunber },
             size: { x: number, y: number },
             px: number,
@@ -119,6 +122,11 @@ export class GameScene extends Phaser.Scene {
                         this.player.x = x;
                         this.player.y = y;
                     }
+                    if(item.type === "angel") {
+                        this.angel = item;
+                        this.angel.x = x;
+                        this.angel.y = y;
+                    }
                     if(item.type !== "wind") {
                         item.sprite.setDepth(1);
                     } else {
@@ -189,8 +197,20 @@ export class GameScene extends Phaser.Scene {
             if(this.winds[toX][toY]) {
                 var movement = this.getMovementFromDirection(this.winds[toX][toY].direction);
                 this.movePlayer(movement.x, movement.y, true);
+            } else {
+                this.checkAngel();
             }
         });
+    }
+
+    checkAngel() {
+        var xdiff = Math.abs(this.player.x - this.angel.x);
+        var ydiff = Math.abs(this.player.y - this.angel.y);
+        if((xdiff === 0 && ydiff === 1) || (xdiff === 1 && ydiff === 0)) {
+            var next = dialog.findIndex(t => t.name === this.map.next);
+            page.set(next);
+            gameActive.set(false);
+        }
     }
 
     canMove = true;

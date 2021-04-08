@@ -26,6 +26,7 @@ export const maps = {
     uriel: {
         background: "level1",
         sprite: "uriel",
+        next: "uriel_entrance",
         offset: { // map offset for alignment
             x: 60,
             y: 100

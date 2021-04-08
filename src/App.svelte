@@ -5,9 +5,7 @@
 	import { characters } from "./stores/characters.js";
 	import { dialog } from "./stores/dialog.js";
 	import Game from "./pages/game.svelte";
-	import { gameActive } from "./stores/gameActive";
-
-	var current = localStorage.getItem("dialog-page") || 0;
+	import { gameActive, page } from "./stores/gameActive";
 
 	var preloads = new Map;
 	function preload(url) {
@@ -33,7 +31,7 @@
 		if(!music.playing()) music.play();
 	}
 
-	console.log(dialog[current]);
+	$: console.log(dialog[$page]);
 	console.log("Pancake recipe at https://github.com/danbulant/heaventaker");
 </script>
 
@@ -43,10 +41,10 @@
 	<title>Heaventaker</title>
 </svelte:head>
 
-{#if dialog[current].map}
-	<Game bind:current />
+{#if dialog[$page].map}
+	<Game bind:current={$page} />
 {/if}
 
-<Overlay active={$gameActive}>
-	<Dialog bind:current />
+<Overlay active={!$gameActive}>
+	<Dialog bind:current={$page} />
 </Overlay>
