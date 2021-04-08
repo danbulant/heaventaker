@@ -60,16 +60,19 @@ export class GameScene extends Phaser.Scene {
          * @type {{ type: string, direction?: number, sprite: Phaser.GameObjects.Sprite, animated: boolean }[][]}
          */
         this.items = new Array(this.map.map.length);
+        this.winds = new Array(this.map.map.length);
         for(var y in this.map.map) {
             var row = this.map.map[y];
             
             for(var x in row) {
                 if(!this.items[x]) {
                     this.items[x] = new Array(row.length);
+                    this.winds[x] = new Array(row.length);
                 }
                 var item = row[x];
                 if(!item) {
                     this.items[x][y] = null;
+                    this.winds[x][y] = null;
                     continue;
                 }
                 if(typeof item === "string") {
@@ -117,7 +120,13 @@ export class GameScene extends Phaser.Scene {
                 } else {
                     item.sprite = null;
                 }
-                this.items[x][y] = item;
+                if(item.type !== "wind") {
+                    this.items[x][y] = item;
+                    this.winds[x][y] = null;
+                } else {
+                    this.items[x][y] = null;
+                    this.winds[x][y] = item;
+                }
             }
         }
     }
@@ -134,8 +143,6 @@ export class GameScene extends Phaser.Scene {
         this.items[fromX][fromY] = null;
         this.items[toX][toY] = item;
     }
-
-    underPlace = null;
 
     getMovementFromDirection(direction) {
         switch(direction) {
@@ -156,28 +163,20 @@ export class GameScene extends Phaser.Scene {
         if(!this.canMove) return;
         var toX = this.player.x + moveX;
         var toY = this.player.y + moveY;
-        console.log("Moving", this.player.x, this.player.y, toX, toY);
         if(toX > this.map.size.x - 1 || toX < 0 || toY > this.map.size.y - 1 || toY < 0) return;
-        var underPlace = this.underPlace;
-        this.underPlace = null;
         if(this.items[toX][toY]) {
-            if(this.items[toX][toY].type === "wind") {
-                this.underPlace = this.items[toX][toY];
-            } else {
                 if(this.items[toX][toY].type !== "lyre") return;
                 if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
                 if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
                 this.move(toX, toY, toX + moveX, toY + moveY);
-            }
         }
         this.canMove = false;
         this.move(this.player.x, this.player.y, toX, toY, () => {
             this.canMove = true;
-            this.items[this.player.x][this.player.y] = underPlace;
             this.player.x = toX;
             this.player.y = toY;
-            if(this.underPlace) {
-                var movement = this.getMovementFromDirection(this.underPlace.direction);
+            if(this.winds[toX][toY]) {
+                var movement = this.getMovementFromDirection(this.winds[toX][toY].direction);
                 this.movePlayer(movement.x, movement.y);
             }
         });
