@@ -13,6 +13,7 @@ function wind(direction) {
             offset: { x: number, y: nunber },
             size: { x: number, y: number },
             px: number,
+            steps: number,
             map: {
                 x: number,
                 y: number,
@@ -33,6 +34,7 @@ export const maps = {
             x: 5,
             y: 7
         },
+        steps: 11,
         px: 100, // block size
         map: [
             ["barrier", "barrier", "angel"  , "barrier", "barrier"],

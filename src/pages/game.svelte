@@ -4,6 +4,7 @@
     import { characters } from "../stores/characters.js";
     import { onMount } from "svelte";
     import { setCanvas, setMap, resize, stop } from "../game";
+    import { steps } from "../stores/step";
 
     export var current;
 
@@ -29,7 +30,6 @@
         return Array(+digits.join("") + 1).join("M") + roman;
     }
 
-    var steps = 11;
     var canvas;
 
     onMount(() => {
@@ -46,6 +46,6 @@
 
 <svelte:window on:resize={resize} />
 
-<GameOverlay {steps} chapter={toRoman(characterIndex + 1)} />
+<GameOverlay steps={$steps} chapter={toRoman(characterIndex + 1)} />
 
 <canvas bind:this={canvas} />

@@ -1,4 +1,5 @@
 import Phaser, { Animations } from "phaser";
+import { steps } from "../stores/step";
 import { keys } from "./input";
 
 const textureWidth = 100;
@@ -18,12 +19,14 @@ export class GameScene extends Phaser.Scene {
             offset: { x: number, y: nunber },
             size: { x: number, y: number },
             px: number,
+            steps: number,
             map: (string | null | {
                 type: string,
                 direction?: number
             })[][]
         }} */
         this.map = map;
+        steps.set(map.steps);
     }
 
     preload() {
@@ -87,7 +90,6 @@ export class GameScene extends Phaser.Scene {
                     var type = item.type;
                     if(type === "angel") type = this.map.sprite;
                     if(this.textures.get(type).frameTotal > 1) {
-                        console.log("Generating animation for", item);
                         var sprite = this.add.sprite(x * this.map.px, y * this.map.px);
                         item.animated = true;
                         if(!this.anims.exists(type)) {
@@ -117,6 +119,12 @@ export class GameScene extends Phaser.Scene {
                         this.player.x = x;
                         this.player.y = y;
                     }
+                    if(item.type !== "wind") {
+                        item.sprite.setDepth(1);
+                    } else {
+                        item.sprite.setDepth(0);
+                    }
+                    this.children.queueDepthSort();
                 } else {
                     item.sprite = null;
                 }
@@ -159,7 +167,7 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    movePlayer(moveX, moveY) {
+    movePlayer(moveX, moveY, fromWind = false) {
         if(!this.canMove) return;
         var toX = this.player.x + moveX;
         var toY = this.player.y + moveY;
@@ -171,13 +179,16 @@ export class GameScene extends Phaser.Scene {
                 this.move(toX, toY, toX + moveX, toY + moveY);
         }
         this.canMove = false;
+        if(!fromWind) {
+            steps.update(t => --t);
+        }
         this.move(this.player.x, this.player.y, toX, toY, () => {
             this.canMove = true;
             this.player.x = toX;
             this.player.y = toY;
             if(this.winds[toX][toY]) {
                 var movement = this.getMovementFromDirection(this.winds[toX][toY].direction);
-                this.movePlayer(movement.x, movement.y);
+                this.movePlayer(movement.x, movement.y, true);
             }
         });
     }
