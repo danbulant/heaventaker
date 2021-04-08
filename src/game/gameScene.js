@@ -32,6 +32,14 @@ export class GameScene extends Phaser.Scene {
         steps.set(map.steps);
     }
 
+    unload() {
+        this.grid.destroy();
+        this.background.destroy();
+        this.container.destroy();
+        delete this.items;
+        delete this.winds;
+    }
+
     preload() {
         this.load.setBaseURL();
         this.load.image("level1", "/sprite/level1.webp");
@@ -49,6 +57,10 @@ export class GameScene extends Phaser.Scene {
                 this.game.sound.context.resume();
             }
         });
+        this.createMap();
+    }
+
+    createMap() {
         console.log(this.map);
 
         this.container = this.add.container();

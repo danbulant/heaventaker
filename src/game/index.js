@@ -9,9 +9,12 @@ export function resize() {
 var htmlcanvas;
 /** @type {Game} */
 var game;
+/** @type {GameScene} */
+var gs;
 export function setCanvas(canvas) {
     htmlcanvas = canvas;
     var ctx = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    gs = new GameScene(map);
     game = new Game({
         canvas: canvas,
         url: window.location.host,
@@ -29,7 +32,7 @@ export function setCanvas(canvas) {
         },
         title: "Heaventaker",
         version: "beta",
-        scene: [new GameScene(map)],
+        scene: [gs],
         backgroundColor: "#01021B"
     });
     game.hideBanner = true;
@@ -45,4 +48,10 @@ var mapname;
 export function setMap(newmap) {
     mapname = newmap;
     map = maps[mapname];
+    if(gs) {
+        gs.unload();
+        gs.map = map;
+        gs.createMap();
+    }
+    console.log("Loaded map", mapname);
 }
