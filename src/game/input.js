@@ -1,3 +1,5 @@
+import Hammer from "hammerjs";
+
 const keybinds = {
     "right": "ArrowRight",
     "left": "ArrowLeft",
@@ -10,6 +12,8 @@ class KeyHandler {
     constructor() {
         this.keys = new Map();
         this.treshold = 0.3;
+
+        this.hammertime = new Hammer(document);
 
         this.axis = new Map([
             ["x", ["moveRight", "moveLeft"]],
@@ -86,49 +90,40 @@ class KeyHandler {
                 return false;
             };
         });
-        // this.addDocumentEventListener("mousemove", (ev) => {
-        //     var rotation = Math.atan2(ev.pageY - window.innerHeight / 2, ev.pageX - window.innerWidth / 2) * 180 / Math.PI;
-        //     rotation += 180;
-        //     this.setAxis("rotation", rotation);
-        // });
-        // this.addDocumentEventListener("mousedown", (ev) => {
-        //     switch(ev.button) {
-        //         case 0:
-        //             if(this.pressKeyBind("mouseLeft")) ev.preventDefault();
-        //             break;
-        //         case 1:
-        //             if(this.pressKeyBind("mouseMiddle")) ev.preventDefault();
-        //             break;
-        //         case 2:
-        //             if(this.pressKeyBind("mouseRight")) ev.preventDefault();
-        //             break;
-        //         case 3:
-        //             if(this.pressKeyBind("mouseSpecial1")) ev.preventDefault();
-        //             break;
-        //         case 4:
-        //             if(this.pressKeyBind("mouseSpecial2")) ev.preventDefault();
-        //             break;
-        //     }
-        // });
-        // this.addDocumentEventListener("mouseup", (ev) => {
-        //     switch(ev.button) {
-        //         case 0:
-        //             if(this.unpressKeyBind("mouseLeft")) ev.preventDefault();
-        //             break;
-        //         case 1:
-        //             if(this.unpressKeyBind("mouseMiddle")) ev.preventDefault();
-        //             break;
-        //         case 2:
-        //             if(this.unpressKeyBind("mouseRight")) ev.preventDefault();
-        //             break;
-        //         case 3:
-        //             if(this.unpressKeyBind("mouseSpecial1")) ev.preventDefault();
-        //             break;
-        //         case 4:
-        //             if(this.unpressKeyBind("mouseSpecial2")) ev.preventDefault();
-        //             break;
-        //     }
-        // });
+
+        this.hammertime.on("tap", (ev) => {
+            var { x, y } = ev.center;
+            x -= innerWidth / 2;
+            y -= innerHeight / 2;
+            var multiplier = 1 / (Math.abs(x) + Math.abs(y));
+            x *= multiplier;
+            y *= multiplier;
+            var direction;
+            console.log(x, y);
+            if(x >= 0.5) {
+                direction = "right";
+            } else if(x <= -0.5) {
+                direction = "left";
+            } else if(y >= 0.5) {
+                direction = "down";
+            } else if(y <= -0.5) {
+                direction = "up";
+            }
+            this.keysWasPressed.set(direction, true);
+        });
+        this.hammertime.on('swipeleft', (ev) => {
+            this.keysWasPressed.set("left", true);
+        });
+        this.hammertime.on('swiperight', (ev) => {
+            this.keysWasPressed.set("right", true);
+        });
+        this.hammertime.on('swipeup', (ev) => {
+            this.keysWasPressed.set("up", true);
+        });
+        this.hammertime.on('swipedown', (ev) => {
+            this.keysWasPressed.set("down", true);
+        });
+        this.hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
     }
     mountHandlers() {
         for(var { type, listener, options } of this.handlers) {

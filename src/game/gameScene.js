@@ -250,10 +250,10 @@ export class GameScene extends Phaser.Scene {
         this.container.y = this.cameras.main.height / 2 - this.container.height / 2;
 
         var movement = { x: 0, y: 0};
-        if(keys.isKeyPressed("down")) movement.y++;
-        if(keys.isKeyPressed("up")) movement.y--;
-        if(keys.isKeyPressed("left")) movement.x--;
-        if(keys.isKeyPressed("right")) movement.x++;
+        if(keys.isKeyPressed("down") || keys.wasKeyPressed("down")) movement.y++;
+        if(keys.isKeyPressed("up") || keys.wasKeyPressed("up")) movement.y--;
+        if(keys.isKeyPressed("left") || keys.wasKeyPressed("left")) movement.x--;
+        if(keys.isKeyPressed("right") || keys.wasKeyPressed("right")) movement.x++;
 
         if((movement.x !== 0 && movement.y === 0) || (movement.x === 0 && movement.y !== 0)) {
             this.movePlayer(movement.x, movement.y);
