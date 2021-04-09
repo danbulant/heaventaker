@@ -191,13 +191,36 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
+    isWindActive(x, y) {
+        if(!this.winds[x] || !this.winds[x][y]) return false;
+        var mov = this.getMovementFromDirection(this.winds[x][y].direction);
+        if(this.items[x][y] && this.items[x][y].type !== "wind" && this.items[x][y].type !== "spawn") {
+            return false;
+        }
+        if(!this.winds[x-mov.x] || !this.winds[x-mov.x][y-mov.y]) {
+            return true;
+        }
+        return this.isWindActive(x-mov.x, y-mov.y);
+    }
+
     movePlayer(moveX, moveY, fromWind = false) {
         if(!this.canMove) return;
         var toX = this.player.x + moveX;
         var toY = this.player.y + moveY;
         if(toX > this.map.size.x - 1 || toX < 0 || toY > this.map.size.y - 1 || toY < 0) return;
         if(this.items[toX][toY]) {
-            if(this.items[toX][toY].type !== "lyre") return;
+            if(fromWind) return;
+            if(this.items[toX][toY].type !== "lyre") {
+                if(this.items[toX][toY].destroyable) {
+                    this.items[toX][toY].sprite.destroy();
+                    this.items[toX][toY] = null;
+                    this.canMove = false;
+                    setTimeout(() => {
+                        this.canMove = true;
+                    }, 400);
+                }
+                return;
+            }
             if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
             if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
             if(stepNum <= 0) {
@@ -224,12 +247,7 @@ export class GameScene extends Phaser.Scene {
             this.canMove = true;
             this.player.x = toX;
             this.player.y = toY;
-            if(this.winds[toX][toY]) {
-                var movement = this.getMovementFromDirection(this.winds[toX][toY].direction);
-                this.movePlayer(movement.x, movement.y, true);
-            } else {
-                this.checkAngel();
-            }
+            if(!fromWind) this.checkAngel();
         });
     }
 
@@ -258,6 +276,12 @@ export class GameScene extends Phaser.Scene {
         this.container.x = this.cameras.main.width / 2 - this.container.width / 2;
         this.container.y = this.cameras.main.height / 2 - this.container.height / 2;
 
+
+        if(this.isWindActive(this.player.x, this.player.y)) {
+            var movement = this.getMovementFromDirection(this.winds[this.player.x][this.player.y].direction);
+            this.movePlayer(movement.x, movement.y, true);
+        }
+
         var movement = { x: 0, y: 0};
         if(keys.isKeyPressed("down") || keys.wasKeyPressed("down")) movement.y++;
         if(keys.isKeyPressed("up") || keys.wasKeyPressed("up")) movement.y--;
@@ -265,7 +289,7 @@ export class GameScene extends Phaser.Scene {
         if(keys.isKeyPressed("right") || keys.wasKeyPressed("right")) movement.x++;
 
         if((movement.x !== 0 && movement.y === 0) || (movement.x === 0 && movement.y !== 0)) {
-            this.movePlayer(movement.x, movement.y);
+            this.movePlayer(movement.x, movement.y, false);
         }
     }
 }
