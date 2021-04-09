@@ -32,6 +32,7 @@ export const dialog = [{
     character: "Uriel",
     text: "Well since it already got boring around here, and how can I say no to pancakes.",
     flags: ["success"],
+    pose: "side_happy",
     next: "michael_heretic"
 }, {
     name: "michael_heretic",
