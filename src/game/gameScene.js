@@ -197,10 +197,19 @@ export class GameScene extends Phaser.Scene {
         var toY = this.player.y + moveY;
         if(toX > this.map.size.x - 1 || toX < 0 || toY > this.map.size.y - 1 || toY < 0) return;
         if(this.items[toX][toY]) {
-                if(this.items[toX][toY].type !== "lyre") return;
-                if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
-                if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
-                this.move(toX, toY, toX + moveX, toY + moveY);
+            if(this.items[toX][toY].type !== "lyre") return;
+            if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
+            if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
+            if(stepNum <= 0) {
+                this.unload();
+                this.createMap();
+                return;
+            }
+            this.canMove = false;
+            this.move(toX, toY, toX + moveX, toY + moveY, () => {
+                this.canMove = true;
+            });
+            return;
         }
         if(stepNum <= 0) {
             this.unload();
