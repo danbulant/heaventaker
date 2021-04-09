@@ -5,6 +5,16 @@ function wind(direction) {
     }
 }
 
+const pillar = {
+    type: "cloud",
+    destroyable: false
+}
+
+const cloud = {
+    type: "cloud",
+    destroyable: true
+}
+
 /**
  * @type {
         [key: string]: {
@@ -35,16 +45,16 @@ export const maps = {
             x: 5,
             y: 7
         },
-        steps: 11,
+        steps: 14,
         px: 100, // block size
         map: [
             ["barrier", "barrier", "angel"  , "barrier", "barrier"],
             ["barrier", "barrier", null     , "barrier", "barrier"],
-            [null     , null     , wind(1)  , null     , null     ],
-            [null     , "lyre"   , wind(1)  , null     , null     ],
-            ["lyre"   , null     , "cloud"  , null     , null     ],
-            [null     , null     , null     , "lyre"   , null     ],
-            ["spawn"  , null     , null     , null     , null     ]
+            [pillar   , null     , null     , null     , pillar   ],
+            [null     , wind(4)  , wind(4)  , wind(4)  , wind(4)  ],
+            [null     , cloud    , wind(2)  , wind(2)  , pillar   ],
+            [null     , "lyre"   , null     , null     , pillar   ],
+            [null     , "lyre"   , "spawn"  , null     , pillar   ]
         ]
     }
 };
