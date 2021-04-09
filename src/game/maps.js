@@ -6,7 +6,7 @@ function wind(direction) {
 }
 
 const pillar = {
-    type: "cloud",
+    type: "pillar",
     destroyable: false
 }
 

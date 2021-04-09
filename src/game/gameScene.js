@@ -48,6 +48,7 @@ export class GameScene extends Phaser.Scene {
         this.load.image("level1", "/sprite/level1.webp");
         this.load.image("lyre", "/sprite/lyre.webp");
         this.load.image("cloud", "/sprite/clouds.webp");
+        this.load.image("pillar", "/sprite/pillar.webp");
         this.load.spritesheet("wind", "/sprite/wind.png", { frameWidth: textureWidth });
         this.load.spritesheet("uriel", "/sprite/uriel.png", { frameWidth: textureWidth });
         this.load.spritesheet("michael", "/sprite/michael.png", { frameWidth: textureWidth });
