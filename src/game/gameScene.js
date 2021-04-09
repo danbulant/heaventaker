@@ -6,6 +6,11 @@ import { dialog } from "../stores/dialog.js";
 
 const textureWidth = 100;
 
+var stepNum;
+steps.subscribe(t => {
+    stepNum = t;
+});
+
 export class GameScene extends Phaser.Scene {
     constructor(map) {
         super({
@@ -61,6 +66,7 @@ export class GameScene extends Phaser.Scene {
     createMap() {
         console.log(this.map);
 
+        steps.set(this.map.steps);
         this.container = this.add.container();
         this.container.width = this.map.size.x * this.map.px + this.map.offset.x * 2;
         this.container.height = this.map.size.y * this.map.px + this.map.offset.y * 2;
@@ -195,6 +201,11 @@ export class GameScene extends Phaser.Scene {
                 if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
                 if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
                 this.move(toX, toY, toX + moveX, toY + moveY);
+        }
+        if(stepNum <= 0) {
+            this.unload();
+            this.createMap();
+            return;
         }
         this.canMove = false;
         if(!fromWind) {

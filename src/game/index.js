@@ -50,7 +50,7 @@ export function setMap(newmap) {
     mapname = newmap;
     map = maps[mapname];
     if(gs) {
-        // gs.unload();
+        gs.unload();
         gs.map = map;
         gs.createMap();
     }
