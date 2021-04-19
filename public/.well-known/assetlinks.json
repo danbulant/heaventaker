@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+        "namespace": "android_app",
+        "package_name": "eu.danbulant.heaventaker",
+        "sha256_cert_fingerprints":
+        ["F1:83:60:AD:52:BA:41:41:EE:2F:0A:BD:78:E5:2A:7B:0B:92:A4:EF:57:25:97:B1:A9:6B:34:23:43:BD:8E:47"]
+    }
+}]
