@@ -27,6 +27,13 @@
     "theme_color": "#333",
     "description": "Helltaker inspired holy game",
     "orientation": "landscape",
+    "related_applications": [
+      {
+        "platform": "play",
+        "url": "https://play.google.com/store/apps/details?id=eu.danbulant.heaventaker",
+        "id": "eu.danbulant.heaventaker"
+      }
+    ],
     "screenshots": [{
       "src": "/sprite/characters.png",
       "sizes": "640x381",
