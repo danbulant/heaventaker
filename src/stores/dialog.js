@@ -39,6 +39,7 @@ export const dialog = [{
     background: "/sprite/backg.webp",
     character: "Michael",
     text: "How did you... You know what I don't even care. Heretic like you needs to be punished.",
+    map: "michael",
     buttons: [{
         text: "Jokes on you I'm into that shit.",
         next: "michael_success"
@@ -107,7 +108,7 @@ export const dialog = [{
     background: "/sprite/backg.webp",
     character: "Gabriel",
     text: "That... That would be lovely actually. Could you buy me some coffee? After my department got defund I can't even afford it.",
-    next: "uriel_entrance",
+    next: "azrael_start",
     pose: "happy",
     flags: ["success"]
 }, {
@@ -127,6 +128,34 @@ export const dialog = [{
     name: "helltaker2",
     background: "/sprite/gabriel_background.webp",
     text: "What are you doing here?",
-    next: "uriel_entrance",
+    next: "gabriel_start",
     flags: ["failure"]
+}, {
+    name: "azrael_start",
+    background: "/sprite/backg.webp",
+    character: "Azrael",
+    text: "Oh my my, what do we have here a lost soul wandering around heaven with an intent lust for angel.",
+    buttons: [{
+        text: "You're god damn right.",
+        next: "azrael_fail"
+    }, {
+        text: "Just go with me",
+        next: "azrael_win"
+    }]
+}, {
+    name: "azrael_fail",
+    next: "azrael_start",
+    character: "Azrael",
+    background: "/sprite/backg.webp",
+    flags: ["failure"],
+    text: "And with that another horny soul bite the dust.",
+    pose: "angry"
+}, {
+    name: "azrael_win",
+    next: "uriel_entrance",
+    background: "/sprite/backg.webp",
+    character: "Azrael",
+    pose: "happy",
+    flags: ["success"],
+    text: "I wonder what should I say here."
 }];

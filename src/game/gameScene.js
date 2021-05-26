@@ -46,6 +46,7 @@ export class GameScene extends Phaser.Scene {
     preload() {
         this.load.setBaseURL();
         this.load.image("level1", "/sprite/level1.webp");
+        this.load.image("level2", "/sprite/level2.webp");
         this.load.image("lyre", "/sprite/lyre.webp");
         this.load.image("cloud", "/sprite/clouds.webp");
         this.load.image("pillar", "/sprite/pillar.webp");
@@ -62,6 +63,16 @@ export class GameScene extends Phaser.Scene {
             }
         });
         this.createMap();
+        window.addEventListener("resize", () => {
+            this.calculateScale();
+        });
+    }
+
+    calculateScale() {
+        const xScale = (document.body.clientWidth - document.body.clientHeight / 2) / this.originalWidth;
+        const yScale =  this.originalHeight / document.body.clientHeight;
+        const offset = 300 / document.body.clientHeight;
+        this.container.scale = Math.min(xScale, yScale) - offset;
     }
 
     createMap() {
@@ -69,11 +80,10 @@ export class GameScene extends Phaser.Scene {
 
         steps.set(this.map.steps);
         this.container = this.add.container();
-        this.container.width = this.map.size.x * this.map.px + this.map.offset.x * 2;
-        this.container.height = this.map.size.y * this.map.px + this.map.offset.y * 2;
-        this.grid = this.add.container(this.map.offset.x, this.map.offset.y);
-        this.container.width = this.map.size.x * this.map.px;
-        this.container.height = this.map.size.y * this.map.px;
+        this.originalWidth = this.map.size.x * this.map.px;
+        this.originalHeight = this.map.size.y * this.map.px;
+        this.grid = this.add.container(this.map.offset.x - this.originalWidth / 2, this.map.offset.y - this.originalHeight / 2);
+        this.calculateScale();
 
         this.background = this.add.image(this.container.width / 2, this.container.height / 2, this.map.background);
         this.container.add(this.background);

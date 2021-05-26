@@ -33,4 +33,12 @@ export const characters = [{
         happy: "/sprite/gabriel_win.webp",
         sad: "/sprite/gabriel_fail.webp"
     }
+}, {
+    name: "Azrael",
+    art: "/sprite/azrael_idle.webp",
+    title: "the great executioner",
+    poses: {
+        happy: "/sprite/azrael_happy.webp",
+        angry: "/sprite/azrael_angry.webp"
+    }
 }];
