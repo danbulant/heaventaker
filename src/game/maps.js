@@ -11,7 +11,7 @@ const pillar = {
 }
 
 const cloud = {
-    type: "cloud",
+    type: cloud,
     destroyable: true
 }
 
@@ -72,11 +72,11 @@ export const maps = {
         px: 100,
         steps: 23,
         map: [
-            ["barrier"  , "barrier" , "barrier" , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   ],
-            ["barrier"  , "barrier" , "barrier" , "cloud"   , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "pillar"  , "cloud"   ],
-            ["cloud"    , "cloud"   , "cloud"   , "cloud"   , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "pillar"  , "cloud"   ],
-            ["cloud"    , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , null      , "angel"   , "cloud"   ],
-            ["cloud"    , null      , "lyre"    , null      , null      , null      , null      , "lyre"    , null      , null      , "barrier" ],
+            ["barrier"  , "barrier" , "barrier" , cloud     , cloud     , cloud     , cloud     , cloud     , cloud     , cloud     , cloud     ],
+            ["barrier"  , "barrier" , "barrier" , cloud     , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "pillar"  , cloud     ],
+            [cloud      , cloud     , cloud     , cloud     , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "pillar"  , cloud     ],
+            [cloud      , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , null      , "angel"   , cloud     ],
+            [cloud      , null      , "lyre"    , null      , null      , null      , null      , "lyre"    , null      , null      , "barrier" ],
             [null       , null      , null      , "lyre"    , "lyre"    , null      , "lyre"    , null      , "lyre"    , "lyre"    , null      ],
             ["spawn"    , null      , "lyre"    , null      , null      , "lyre"    , null      , "lyre"    , null      , null      , "barrier" ],
             ["barrier"  , "barrier" , null      , "lyre"    , null      , null      , "lyre"    , "barrier" , "barrier" , "barrier" , "barrier" ]
