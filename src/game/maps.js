@@ -70,7 +70,7 @@ export const maps = {
             y: 90
         },
         px: 100,
-        steps: 177013,
+        steps: 23,
         map: [
             ["barrier"  , "barrier" , "barrier" , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   , "cloud"   ],
             ["barrier"  , "barrier" , "barrier" , "cloud"   , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "pillar"  , "cloud"   ],

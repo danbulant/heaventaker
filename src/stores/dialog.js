@@ -139,7 +139,7 @@ export const dialog = [{
         text: "You're god damn right.",
         next: "azrael_fail"
     }, {
-        text: "Just go with me",
+        text: "Nah, I'm just looking for someone to play some RTS with.",
         next: "azrael_win"
     }]
 }, {
@@ -157,5 +157,5 @@ export const dialog = [{
     character: "Azrael",
     pose: "happy",
     flags: ["success"],
-    text: "I wonder what should I say here."
+    text: "I highly doubt that. But you know what fuck it, I'm bored playing against AI anyway."
 }];
