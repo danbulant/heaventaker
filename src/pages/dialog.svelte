@@ -1,9 +1,10 @@
 <script>
     import Button from "./button.svelte";
     import { Howl } from "howler";
-	import { dialog } from "../stores/dialog.js";
+	import { chapters, dialog } from "../stores/dialog.js";
     import { characters } from "../stores/characters.js";
-import { gameActive } from "../stores/gameActive";
+    import { gameActive } from "../stores/gameActive";
+    import { toRoman } from "../utils";
 
     export var current;
     export var page;
@@ -28,6 +29,7 @@ import { gameActive } from "../stores/gameActive";
 
     var activeButton = -1;
     function select(i) {
+        console.log("Switching", i);
         if(!allowSwitch) return;
         var next;
         if(d.buttons) {
@@ -61,20 +63,33 @@ import { gameActive } from "../stores/gameActive";
         failure = false;
         current = next;
         d = dialog[current];
-        art = !character ? null : d.character_art || d.pose ? character.poses[d.pose] : character.art;
+        art = !character ? null : (d.character_art || d.pose && character.poses ? character.poses[d.pose] : character.art);
         background = d.background;
         if(d.map) {
-            $gameActive = true;
+            setTimeout(() => {
+                $gameActive = true;
+            }, 300);
         }
-        localStorage.setItem("dialog-page", next);
+        console.log("selected", d);
+        if(!d.flags || !d.flags.includes("nosave")) localStorage.setItem("dialog-page", next);
+        if(d.chapter) {
+            if(!chaptersDone.includes(d.chapter)) {
+                chaptersDone.push(d.chapter);
+                localStorage.setItem("chapters", JSON.stringify(chaptersDone));
+            }
+        }
     }
+
+    var chaptersDone = JSON.parse(localStorage.getItem("chapters") || "[]");
 
     function keydown(e) {
         switch(e.key) {
             case "ArrowUp":
+            case "ArrowLeft":
                 activeButton--;
                 if(activeButton < 0) activeButton = 0;
                 break;
+            case "ArrowRight":
             case "ArrowDown":
                 activeButton++;
                 if(d.buttons && activeButton > d.buttons.length - 1) activeButton = d.buttons.length - 1;
@@ -94,7 +109,7 @@ import { gameActive } from "../stores/gameActive";
     */
     function next(e) {
         var path = e.composedPath();
-        if(path.includes(buttons)) return;
+        if(buttons && path.includes(buttons)) return;
         reset();
         select();
     }
@@ -142,13 +157,30 @@ import { gameActive } from "../stores/gameActive";
                 {:else}
                     <h1>???</h1>
                 {/if}
-                <p class="animate" bind:this={textElement}>{d.text}</p>
+                {#if d.text}
+                    <p class="animate" bind:this={textElement}>
+                        {#if d.flags && d.flags.includes("chapters") && chaptersDone.length === 0}
+                            {d.alt}
+                        {:else}
+                           {d.text}
+                        {/if}
+                    </p>
+                {/if}
             </div>
             <div class="buttons" bind:this={buttons}>
                 {#if d.buttons}
                     {#each d.buttons as button, i}
                         <Button active={i === activeButton} on:click={() => select(i)}>{button.text}</Button>
                     {/each}
+                {/if}
+                {#if d && d.flags && d.flags.includes("chapters") && chaptersDone.length}
+                    <div class="chapters">
+                        {#each Object.keys(chapters) as chapter}
+                            <div class="chapter" class:active={chaptersDone && chaptersDone.includes(chapter)}>
+                                {toRoman(chapters[chapter])}
+                            </div>
+                        {/each}
+                    </div>
                 {/if}
             </div>
             {#if success}
@@ -159,6 +191,22 @@ import { gameActive } from "../stores/gameActive";
 </div>
 
 <style>
+    .chapters {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .chapter {
+        border: 2px solid rgb(155, 0, 0);
+        padding: 4px;
+        margin: 3px;
+        cursor: not-allowed;
+    }
+    .chapter.active {
+        cursor: pointer;
+        border-color: red;
+    }
     .dialog {
         background: #02021A;
         color: white;

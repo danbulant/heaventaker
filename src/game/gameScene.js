@@ -47,6 +47,7 @@ export class GameScene extends Phaser.Scene {
         this.load.setBaseURL();
         this.load.image("level1", "/sprite/level1.webp");
         this.load.image("level2", "/sprite/level2.webp");
+        this.load.image("level3", "/sprite/level3.webp");
         this.load.image("lyre", "/sprite/lyre.webp");
         this.load.image("cloud", "/sprite/clouds.webp");
         this.load.image("pillar", "/sprite/pillar.webp");

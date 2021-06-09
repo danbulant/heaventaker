@@ -1,4 +1,68 @@
+export const chapters = {
+    uriel: 1,
+    michael: 2,
+    uziel: 3,
+    gabriel: 4,
+    azrael: 5
+};
+
+/**
+ * @type {{
+ *  name: string,
+ * background: string,
+ * character: string,
+ * text: string,
+ * next?: string,
+ * pose?: string,
+ * map?: string,
+ * chapter?: keyof typeof chapters,
+ * buttons: { text: string, next: string }[],
+ * flags?: string[]
+ * }[]}
+ */
 export const dialog = [{
+    name: "start",
+    background: "/sprite/menu.webp",
+    text: "Hello and welcome on your way to heaven. My name is Hadraniel, and I'm the one appointed to you at the moment.",
+    next: "start2",
+    buttons: [{
+        text: "I'd like to go to the heaven's gate.",
+        next: "start2"
+    }]
+}, {
+    name: "start2",
+    background: "/sprite/menu.webp",
+    character: "Hadraniel",
+    text: "Sure. Oh and before you go there, just a warning: don't even think about trying to seduce the angels. It doesn't work here the same as down there.",
+    next: "start3"
+}, {
+    name: "start3",
+    background: "/sprite/menu.webp",
+    character: "Hadraniel",
+    text: "Wait where are you going? That's not the way to the main gate-",
+    next: "uriel_entrance"
+}, {
+    name: "menu",
+    background: "/sprite/menu.webp",
+    character: "Hadraniel",
+    text: "",
+    buttons: [{
+        text: "Start",
+        next: "uriel_entrance"
+    }, {
+        text: "Chapter select",
+        next: "chapters"
+    }],
+    flags: ["menu", "nosave"]
+}, {
+    name: "chapters",
+    background: "/sprite/menu.webp",
+    character: "Hadraniel",
+    text: "Which chapter would you like to solve?",
+    alt: "You must first complete a chapter to be able to solve it.",
+    next: "menu",
+    flags: ["chapters", "nosave"]
+}, {
     name: "uriel_entrance",
     background: "/sprite/backg.webp",
     character: "Uriel",
@@ -28,6 +92,7 @@ export const dialog = [{
     pose: "bat"
 }, {
     name: "uriel_success",
+    chapter: "uriel",
     background: "/sprite/backg.webp",
     character: "Uriel",
     text: "Well since it already got boring around here, and how can I say no to pancakes.",
@@ -49,6 +114,7 @@ export const dialog = [{
     }]
 }, {
     name: "michael_success",
+    chapter: "michael",
     background: "/sprite/backg.webp",
     character: "Michael",
     pose: "happy",
@@ -85,6 +151,7 @@ export const dialog = [{
     pose: "dead"
 }, {
     name: "uziel_success",
+    chapter: "uziel",
     background: "/sprite/backg.webp",
     character: "Uziel",
     pose: "happy",
@@ -105,6 +172,7 @@ export const dialog = [{
     }]
 }, {
     name: "gabriel_success",
+    chapter: "gabriel",
     background: "/sprite/backg.webp",
     character: "Gabriel",
     text: "That... That would be lovely actually. Could you buy me some coffee? After my department got defund I can't even afford it.",
@@ -152,7 +220,8 @@ export const dialog = [{
     pose: "angry"
 }, {
     name: "azrael_win",
-    next: "uriel_entrance",
+    chapter: "azrael",
+    next: "menu",
     background: "/sprite/backg.webp",
     character: "Azrael",
     pose: "happy",

@@ -14,10 +14,14 @@
 		preloads.get(url).src = url;
 	}
 	for(let character of characters) {
-		preload(character.art); // preload art
+		if(character.art) {
+			preload(character.art); // preload art
+		}
 	}
 	for(let d of dialog) {
-		preload(d.background); // preload art
+		if(d.background) {
+			preload(d.background); // preload art
+		}
 	}
 
 	var music = new Howl({

@@ -41,4 +41,7 @@ export const characters = [{
         happy: "/sprite/azrael_happy.webp",
         angry: "/sprite/azrael_angry.webp"
     }
+}, {
+    name: "Hadraniel",
+    title: "the seraphim"
 }];
