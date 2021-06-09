@@ -50,10 +50,17 @@ export class GameScene extends Phaser.Scene {
         this.load.image("lyre", "/sprite/lyre.webp");
         this.load.image("cloud", "/sprite/clouds.webp");
         this.load.image("pillar", "/sprite/pillar.webp");
+        this.load.image("key", "/sprite/key.webp");
+        this.load.image("lock", "/sprite/lock.webp");
         this.load.spritesheet("wind", "/sprite/wind.png", { frameWidth: textureWidth });
         this.load.spritesheet("uriel", "/sprite/uriel.png", { frameWidth: textureWidth });
         this.load.spritesheet("michael", "/sprite/michael.png", { frameWidth: textureWidth });
-        this.load.spritesheet("spawn", "/sprite/michael.png", { frameWidth: textureWidth });
+        this.load.spritesheet("spawn", "/sprite/yahweh.png", { frameWidth: textureWidth });
+        this.load.spritesheet("azrael", "/sprite/azrael.png", { frameWidth: textureWidth });
+        this.load.spritesheet("celestine", "/sprite/celestine.png", { frameWidth: textureWidth });
+        this.load.spritesheet("gabriel", "/sprite/gabriel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("uziel", "/sprite/uziel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("yahweh", "/sprite/yahweh.png", { frameWidth: textureWidth });
     }
 
     create() {
@@ -69,10 +76,14 @@ export class GameScene extends Phaser.Scene {
     }
 
     calculateScale() {
-        const xScale = (document.body.clientWidth - document.body.clientHeight / 2) / this.originalWidth;
-        const yScale =  this.originalHeight / document.body.clientHeight;
-        const offset = 300 / document.body.clientHeight;
-        this.container.scale = Math.min(xScale, yScale) - offset;
+        const maxWidth = innerWidth * 0.8 - (document.body.clientHeight / 1080 * 615 * 1.1);
+        const maxHeight = innerHeight * 0.8;
+        const targetWidth = this.originalWidth + this.map.offset.x * 2;
+        const targetHeight = this.originalHeight + this.map.offset.y * 2;
+
+        const xScale = maxWidth / targetWidth;
+        const yScale = maxHeight / targetHeight;
+        this.container.scale = Math.min(xScale, yScale);
     }
 
     createMap() {
