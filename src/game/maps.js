@@ -11,7 +11,7 @@ const pillar = {
 }
 
 const cloud = {
-    type: cloud,
+    type: "cloud",
     destroyable: true
 }
 
