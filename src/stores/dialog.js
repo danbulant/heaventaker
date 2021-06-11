@@ -143,6 +143,7 @@ export const dialog = [{
     background: "/sprite/backg.webp",
     character: "Uziel",
     chapterStart: "uziel",
+    map: "uziel",
     text: "(she appear out of nowhere and suddenly approaches you.)",
     buttons: [{
         text: "oh, you're approaching me? Had you heard of my harem proposal.",

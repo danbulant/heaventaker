@@ -77,7 +77,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     calculateScale() {
-        const maxWidth = innerWidth * 0.8 - (document.body.clientHeight / 1080 * 615 * 1.1);
+        const maxWidth = innerWidth * 0.8 - (document.body.clientHeight / 1080 * 615 * 1.15);
         const maxHeight = innerHeight * 0.8;
         const targetWidth = this.originalWidth + this.map.offset.x * 2;
         const targetHeight = this.originalHeight + this.map.offset.y * 2;
@@ -130,7 +130,10 @@ export class GameScene extends Phaser.Scene {
                 x = parseInt(x);
                 if(item.type !== "barrier") {
                     var type = item.type;
-                    if(type === "angel") type = this.map.sprite;
+                    if(type === "angel") {
+                        type = this.map.sprite;
+                        item.texture = type;
+                    }
                     if(this.textures.get(type).frameTotal > 1) {
                         var sprite = this.add.sprite(x * this.map.px, y * this.map.px);
                         item.animated = true;
@@ -149,17 +152,17 @@ export class GameScene extends Phaser.Scene {
                         var sprite = this.add.sprite(x * this.map.px, y * this.map.px, type);
                         item.animated = false;
                     }
+                    sprite.scale = this.map.px / 100;
                     sprite.setRotation(item.direction * Math.PI / 2);
                     this.grid.add(sprite);
                     item.sprite = sprite;
-                    if(type !== item.type) {
-                        item.texture = type;
-                    }
 
                     if(item.type === "spawn") {
+                        /** @type {{ x: number, y: number, hasKey: boolean }} */
                         this.player = item;
                         this.player.x = x;
                         this.player.y = y;
+                        this.player.hasKey = false;
                     }
                     if(item.type === "angel") {
                         this.angel = item;
@@ -226,36 +229,57 @@ export class GameScene extends Phaser.Scene {
         return this.isWindActive(x-mov.x, y-mov.y);
     }
 
+    tryDestroy(toX, toY) {
+        if(this.items[toX][toY].destroyable) {
+            this.items[toX][toY].sprite.alpha = 0;
+            this.items[toX][toY].sprite.destroy();
+            console.log("Destroyed", this.items[toX][toY].sprite);
+            this.items[toX][toY] = null;
+            this.canMove = false;
+            setTimeout(() => {
+                this.canMove = true;
+            }, 400);
+            return true;
+        }
+    }
+
     movePlayer(moveX, moveY, fromWind = false) {
         if(!this.canMove) return;
         var toX = this.player.x + moveX;
         var toY = this.player.y + moveY;
         if(toX > this.map.size.x - 1 || toX < 0 || toY > this.map.size.y - 1 || toY < 0) return;
         if(this.items[toX][toY]) {
-            if(fromWind) return;
-            if(this.items[toX][toY].type !== "lyre") {
-                if(this.items[toX][toY].destroyable) {
-                    this.items[toX][toY].sprite.destroy();
-                    this.items[toX][toY] = null;
-                    this.canMove = false;
-                    setTimeout(() => {
-                        this.canMove = true;
-                    }, 400);
+            if(this.items[toX][toY].type === "key") {
+                this.items[toX][toY].sprite.destroy();
+                this.items[toX][toY] = null;
+                this.player.hasKey = true;
+            } else if(fromWind) return;
+            else if(this.items[toX][toY].type === "lock") {
+                if(!this.player.hasKey) return;
+                this.items[toX][toY].sprite.destroy();
+                this.items[toX][toY] = null;
+            } else if(this.items[toX][toY].type !== "lyre" && this.tryDestroy(toX, toY)) {
+                steps.update(t => --t);
+                if(stepNum <= 0) {
+                    this.unload();
+                    this.createMap();
+                    return;
                 }
                 return;
-            }
-            if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
-            if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
-            if(stepNum <= 0) {
-                this.unload();
-                this.createMap();
+            } else if(this.items[toX][toY].type === "lyre" && !this.items[toX + moveX][toY + moveY]) {
+                if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
+                if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
+                if(stepNum <= 0) {
+                    this.unload();
+                    this.createMap();
+                    return;
+                }
+                this.canMove = false;
+                this.move(toX, toY, toX + moveX, toY + moveY, () => {
+                    this.canMove = true;
+                });
                 return;
-            }
-            this.canMove = false;
-            this.move(toX, toY, toX + moveX, toY + moveY, () => {
-                this.canMove = true;
-            });
-            return;
+            } else return;
         }
         if(stepNum <= 0) {
             this.unload();

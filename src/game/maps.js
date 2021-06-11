@@ -75,11 +75,36 @@ export const maps = {
             ["barrier"  , "barrier" , "barrier" , cloud     , cloud     , cloud     , cloud     , cloud     , cloud     , cloud     , cloud     ],
             ["barrier"  , "barrier" , "barrier" , cloud     , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "pillar"  , cloud     ],
             [cloud      , cloud     , cloud     , cloud     , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "pillar"  , cloud     ],
-            [cloud      , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , null      , "angel"   , cloud     ],
+            [cloud      , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "barrier" , "angel"   , cloud     ],
             [cloud      , null      , "lyre"    , null      , null      , null      , null      , "lyre"    , null      , null      , "barrier" ],
             [null       , null      , null      , "lyre"    , "lyre"    , null      , "lyre"    , null      , "lyre"    , "lyre"    , null      ],
             ["spawn"    , null      , "lyre"    , null      , null      , "lyre"    , null      , "lyre"    , null      , null      , "barrier" ],
             ["barrier"  , "barrier" , null      , "lyre"    , null      , null      , "lyre"    , "barrier" , "barrier" , "barrier" , "barrier" ]
+        ]
+    },
+    uziel: {
+        background: "level3",
+        sprite: "uziel",
+        next: "uziel_start",
+        size: {
+            x: 7,
+            y: 8
+        },
+        offset: {
+            x: 0,
+            y: 100
+        },
+        px: 80,
+        steps: 26,
+        map: [
+            ["barrier"  , "barrier" , "barrier" , "barrier" , "angel"   , "barrier" ],
+            [wind(4)    , wind(4)   , wind(4)   , wind(4)   , wind(3)   , "barrier" ],
+            [null       , cloud     , null      , "lyre"    , "lock"    , "barrier" ],
+            ["barrier"  , null      , "lyre"    , null      , null      , "barrier" ],
+            ["barrier"  , cloud     , "lyre"    , null      , null      , "barrier" , "barrier" ],
+            ["spawn"    , null      , null      , wind(2)   , cloud     , "lyre"    , "key"     ],
+            ["barrier"  , "barrier" , wind(2)   , "lyre"    ],
+            [null       , "barrier" , null      , null      , null      , "barrier" , "barrier" ]
         ]
     }
 };
