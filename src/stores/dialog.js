@@ -16,6 +16,7 @@ export const chapters = {
  * pose?: string,
  * map?: string,
  * chapter?: keyof typeof chapters,
+ * chapterStart?: keyof typeof chapters,
  * buttons: { text: string, next: string }[],
  * flags?: string[]
  * }[]}
@@ -42,6 +43,12 @@ export const dialog = [{
     text: "Wait where are you going? That's not the way to the main gate-",
     next: "uriel_entrance"
 }, {
+    name: "restart",
+    background: "/sprite/menu.webp",
+    character: "Hadraniel",
+    text: "Welcome back. What do you desire now?",
+    next: "menu"
+}, {
     name: "menu",
     background: "/sprite/menu.webp",
     character: "Hadraniel",
@@ -64,6 +71,7 @@ export const dialog = [{
     flags: ["chapters", "nosave"]
 }, {
     name: "uriel_entrance",
+    chapterStart: "uriel",
     background: "/sprite/backg.webp",
     character: "Uriel",
     pose: "side_normal",
@@ -101,6 +109,7 @@ export const dialog = [{
     next: "michael_heretic"
 }, {
     name: "michael_heretic",
+    chapterStart: "michael",
     background: "/sprite/backg.webp",
     character: "Michael",
     text: "How did you... You know what I don't even care. Heretic like you needs to be punished.",
@@ -133,6 +142,7 @@ export const dialog = [{
     name: "uziel_start",
     background: "/sprite/backg.webp",
     character: "Uziel",
+    chapterStart: "uziel",
     text: "(she appear out of nowhere and suddenly approaches you.)",
     buttons: [{
         text: "oh, you're approaching me? Had you heard of my harem proposal.",
@@ -162,6 +172,7 @@ export const dialog = [{
     name: "gabriel_start",
     background: "/sprite/backg.webp",
     character: "Gabriel",
+    chapterStart: "gabriel",
     text: "Hello sir. My name is Gabriel, Heaven's administration department. How may I help you?",
     buttons: [{
         text: "You look tired, how about let me help you instead.",
@@ -202,6 +213,7 @@ export const dialog = [{
     name: "azrael_start",
     background: "/sprite/backg.webp",
     character: "Azrael",
+    chapterStart: "azrael",
     text: "Oh my my, what do we have here a lost soul wandering around heaven with an intent lust for angel.",
     buttons: [{
         text: "You're god damn right.",
@@ -221,7 +233,7 @@ export const dialog = [{
 }, {
     name: "azrael_win",
     chapter: "azrael",
-    next: "menu",
+    next: "restart",
     background: "/sprite/backg.webp",
     character: "Azrael",
     pose: "happy",

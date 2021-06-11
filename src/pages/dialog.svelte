@@ -29,10 +29,16 @@
 
     var activeButton = -1;
     function select(i) {
-        console.log("Switching", i);
         if(!allowSwitch) return;
         var next;
-        if(d.buttons) {
+        if(d.flags && d.flags.includes("chapters")) {
+            const keys = Object.keys(chapters);
+            console.log(keys);
+            if(!keys[i]) return;
+            const key = keys[i];
+            if(!chaptersDone.includes(key)) return;
+            next = dialog.findIndex(t => t.chapterStart === key);
+        } else if(d.buttons) {
             if(!d.buttons[i]) return;
             next = dialog.findIndex(t => t.name === d.buttons[i].next);
         } else {
@@ -80,6 +86,7 @@
         }
     }
 
+    /** @type {string[]}*/
     var chaptersDone = JSON.parse(localStorage.getItem("chapters") || "[]");
 
     function keydown(e) {
@@ -92,11 +99,16 @@
             case "ArrowRight":
             case "ArrowDown":
                 activeButton++;
-                if(d.buttons && activeButton > d.buttons.length - 1) activeButton = d.buttons.length - 1;
+                if(d.flags && d.flags.includes("chapters")) {
+                    if(activeButton > Object.keys(chapters).length - 1) activeButton = Object.keys(chapters).length - 1;
+                } else if(d.buttons && activeButton > d.buttons.length - 1) {
+                    activeButton = d.buttons.length - 1;
+                }
                 break;
             case "Enter":
             case " ":
                 select(activeButton);
+                reset();
                 break;
         }
     }
@@ -175,8 +187,8 @@
                 {/if}
                 {#if d && d.flags && d.flags.includes("chapters") && chaptersDone.length}
                     <div class="chapters">
-                        {#each Object.keys(chapters) as chapter}
-                            <div class="chapter" class:active={chaptersDone && chaptersDone.includes(chapter)}>
+                        {#each Object.keys(chapters) as chapter, i}
+                            <div class="chapter" class:selected={i === activeButton} on:click={() => select(i)} class:active={chaptersDone && chaptersDone.includes(chapter)}>
                                 {toRoman(chapters[chapter])}
                             </div>
                         {/each}
@@ -202,6 +214,9 @@
         padding: 4px;
         margin: 3px;
         cursor: not-allowed;
+    }
+    .chapter.selected, .chapter:hover {
+        box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.705);
     }
     .chapter.active {
         cursor: pointer;

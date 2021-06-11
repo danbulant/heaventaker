@@ -99,7 +99,6 @@ class KeyHandler {
             x *= multiplier;
             y *= multiplier;
             var direction;
-            console.log(x, y);
             if(x >= 0.5) {
                 direction = "right";
             } else if(x <= -0.5) {
