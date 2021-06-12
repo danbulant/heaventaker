@@ -11,7 +11,7 @@
     .button {
         max-width: 800px;
         position: relative;
-        font-size: 25px;
+        font-size: clamp(1rem, 4vh - 0.2rem, 1.5rem);
         background: url("/sprite/button2.webp");
         background-size: auto 100%;
         background-repeat: repeat-x;
@@ -25,21 +25,21 @@
     }
     .button:before {
         content: "";
-        height: 43px;
-        width: 64px;
+        height: 1.72em;
+        width: 2.56em;
         background: url("/sprite/button1.webp");
         background-size: contain;
-        left: -64px;
+        left: -2.56em;
         top: 0;
         position: absolute;
     }
     .button:after {
         content: "";
-        height: 43px;
-        width: 64px;
+        height: 1.72em;
+        width: 2.56em;
         background: url("/sprite/button1.webp");
         background-size: contain;
-        right: -64px;
+        right: -2.56em;
         top: 0;
         position: absolute;
         transform: scaleX(-1);

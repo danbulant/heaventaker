@@ -229,8 +229,16 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        width: 100%;
+        max-height: 100vh;
+        width: 100vw;
         user-select: none;
+    }
+    .text {
+        font-size: clamp(1rem, 4vh - 0.2rem, 1.5rem);
+        max-height: 50vh;
+    }
+    .text p {
+        font-size: inherit;
     }
     h1 {
         color: #FFFCBE;

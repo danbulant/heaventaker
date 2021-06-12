@@ -146,7 +146,7 @@ export const dialog = [{
     map: "uziel",
     text: "(she appear out of nowhere and suddenly approaches you.)",
     buttons: [{
-        text: "oh, you're approaching me? Had you heard of my harem proposal.",
+        text: "oh, you're approaching me? Have you heard of my harem proposal.",
         next: "uziel_failure"
     }, {
         text: "Harem of angle, yes or no ?",
