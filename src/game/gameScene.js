@@ -1,5 +1,5 @@
 import Phaser, { Animations } from "phaser";
-import { gameActive, page } from "../stores/gameActive";
+import { gameActive, menuActive, page } from "../stores/gameActive";
 import { steps } from "../stores/step";
 import { keys } from "./input";
 import { dialog } from "../stores/dialog.js";
@@ -9,6 +9,10 @@ const textureWidth = 100;
 var stepNum;
 steps.subscribe(t => {
     stepNum = t;
+});
+var paused;
+menuActive.subscribe(t => {
+    paused = t;
 });
 
 export class GameScene extends Phaser.Scene {
@@ -311,6 +315,15 @@ export class GameScene extends Phaser.Scene {
     canMove = true;
 
     update() {
+        this.container.x = this.cameras.main.width / 2 - this.container.width / 2;
+        this.container.y = this.cameras.main.height / 2 - this.container.height / 2;
+        if(keys.wasKeyPressed("pause")) {
+            console.log("Paused");
+            menuActive.set(!paused);
+        }
+
+        if(paused) return;
+
         // debug mode
         if(keys.wasKeyPressed("debug")) {
             console.log("Toggled debug mode");
@@ -319,9 +332,6 @@ export class GameScene extends Phaser.Scene {
             this.physics.world.drawDebug = this.physics.config.debug;
             if(!this.physics.config.debug) this.physics.world.debugGraphic.destroy();
         }
-
-        this.container.x = this.cameras.main.width / 2 - this.container.width / 2;
-        this.container.y = this.cameras.main.height / 2 - this.container.height / 2;
 
 
         if(this.isWindActive(this.player.x, this.player.y)) {

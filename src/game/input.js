@@ -5,7 +5,8 @@ const keybinds = {
     "left": "ArrowLeft",
     "up": "ArrowUp",
     "down": "ArrowDown",
-    "debug": "f3"
+    "debug": "f3",
+    "pause": "Escape"
 };
 
 class KeyHandler {

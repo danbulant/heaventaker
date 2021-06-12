@@ -5,7 +5,8 @@
 	import { characters } from "./stores/characters.js";
 	import { dialog } from "./stores/dialog.js";
 	import Game from "./pages/game.svelte";
-	import { gameActive, page } from "./stores/gameActive";
+	import { gameActive, menuActive, page } from "./stores/gameActive";
+import Menu from "./pages/menu.svelte";
 
 	var preloads = new Map;
 	function preload(url) {
@@ -71,8 +72,11 @@
 {#if dialog[$page].map}
 	<Game bind:current={$page} />
 {/if}
+{#if $menuActive}
+	<Menu />
+{/if}
 
-<Overlay active={!$gameActive}>
+<Overlay active={!dialog[$page].map || !$gameActive}>
 	<Dialog bind:current={$page} />
 </Overlay>
 

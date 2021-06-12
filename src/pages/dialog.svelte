@@ -3,8 +3,9 @@
     import { Howl } from "howler";
 	import { chapters, dialog } from "../stores/dialog.js";
     import { characters } from "../stores/characters.js";
-    import { gameActive } from "../stores/gameActive";
+    import { gameActive, menuActive } from "../stores/gameActive";
     import { toRoman } from "../utils";
+import Keypress from "../stores/keypress.svelte";
 
     export var current;
     export var page;
@@ -90,7 +91,8 @@
     var chaptersDone = JSON.parse(localStorage.getItem("chapters") || "[]");
 
     function keydown(e) {
-        switch(e.key) {
+        if($menuActive || $gameActive) return;
+        switch(e.detail.key) {
             case "ArrowUp":
             case "ArrowLeft":
                 activeButton--;
@@ -150,7 +152,8 @@
     }
 </script>
 
-<svelte:window on:keydown={keydown} on:mousemove={reset} on:click={next} />
+<Keypress on:keypress={keydown} />
+<svelte:window on:mousemove={reset} on:click={next} />
 
 <div class="dialog" class:failure>
     <div class="background">
