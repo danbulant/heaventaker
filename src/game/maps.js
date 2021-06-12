@@ -45,7 +45,7 @@ export const maps = {
             x: 5,
             y: 7
         },
-        steps: 13,
+        steps: 14,
         px: 100, // block size
         map: [
             ["barrier", "barrier", "angel"  , "barrier", "barrier"],
