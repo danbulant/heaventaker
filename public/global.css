@@ -19,7 +19,7 @@ body {
 @font-face {
 	font-family: 'Times New Roman W';
 	font-display: swap;
-	src: url("/times.woff2");
+	src: url("./times.woff2");
 }
 
 a {

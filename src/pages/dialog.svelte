@@ -136,7 +136,7 @@ import Keypress from "../stores/keypress.svelte";
     var failure = false;
 
     var successSound = new Howl({
-        src: "/sound/success.wav"
+        src: "./sound/success.wav"
     });
     var textElement;
     $: {
@@ -158,10 +158,10 @@ import Keypress from "../stores/keypress.svelte";
 <div class="dialog" class:failure>
     <div class="background">
         {#if background}
-            <img src={background} alt="" class="full" draggable={false}>
+            <img src="./{background}" alt="" class="full" draggable={false}>
         {/if}
         {#if art}
-            <img src={art} alt="" class="character" draggable={false}>
+            <img src="./{art}" alt="" class="character" draggable={false}>
         {/if}
     </div>
     {#if showText}

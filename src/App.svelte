@@ -6,7 +6,7 @@
 	import { dialog } from "./stores/dialog.js";
 	import Game from "./pages/game.svelte";
 	import { gameActive, menuActive, page } from "./stores/gameActive";
-import Menu from "./pages/menu.svelte";
+	import Menu from "./pages/menu.svelte";
 
 	var preloads = new Map;
 	function preload(url) {
@@ -16,17 +16,17 @@ import Menu from "./pages/menu.svelte";
 	}
 	for(let character of characters) {
 		if(character.art) {
-			preload(character.art); // preload art
+			preload("." + character.art); // preload art
 		}
 	}
 	for(let d of dialog) {
 		if(d.background) {
-			preload(d.background); // preload art
+			preload("." + d.background); // preload art
 		}
 	}
 
 	var music = new Howl({
-		src: "/sound/mittsies-departure.mp3",
+		src: "./sound/mittsies-departure.mp3",
 		html5: true,
 		loop: true,
 		autoplay: true
