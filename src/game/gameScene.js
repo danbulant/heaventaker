@@ -49,23 +49,23 @@ export class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.setBaseURL();
-        this.load.image("level1", "/sprite/level1.webp");
-        this.load.image("level2", "/sprite/level2.webp");
-        this.load.image("level3", "/sprite/level3.webp");
-        this.load.image("lyre", "/sprite/lyre.webp");
-        this.load.image("cloud", "/sprite/clouds.webp");
-        this.load.image("pillar", "/sprite/pillar.webp");
-        this.load.image("key", "/sprite/key.webp");
-        this.load.image("lock", "/sprite/lock.webp");
-        this.load.spritesheet("wind", "/sprite/wind.png", { frameWidth: textureWidth });
-        this.load.spritesheet("uriel", "/sprite/uriel.png", { frameWidth: textureWidth });
-        this.load.spritesheet("michael", "/sprite/michael.png", { frameWidth: textureWidth });
-        this.load.spritesheet("spawn", "/sprite/yahweh.png", { frameWidth: textureWidth });
-        this.load.spritesheet("azrael", "/sprite/azrael.png", { frameWidth: textureWidth });
-        this.load.spritesheet("celestine", "/sprite/celestine.png", { frameWidth: textureWidth });
-        this.load.spritesheet("gabriel", "/sprite/gabriel.png", { frameWidth: textureWidth });
-        this.load.spritesheet("uziel", "/sprite/uziel.png", { frameWidth: textureWidth });
-        this.load.spritesheet("yahweh", "/sprite/yahweh.png", { frameWidth: textureWidth });
+        this.load.image("level1", "./sprite/level1.webp");
+        this.load.image("level2", "./sprite/level2.webp");
+        this.load.image("level3", "./sprite/level3.webp");
+        this.load.image("lyre", "./sprite/lyre.webp");
+        this.load.image("cloud", "./sprite/clouds.webp");
+        this.load.image("pillar", "./sprite/pillar.webp");
+        this.load.image("key", "./sprite/key.webp");
+        this.load.image("lock", "./sprite/lock.webp");
+        this.load.spritesheet("wind", "./sprite/wind.png", { frameWidth: textureWidth });
+        this.load.spritesheet("uriel", "./sprite/uriel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("michael", "./sprite/michael.png", { frameWidth: textureWidth });
+        this.load.spritesheet("spawn", "./sprite/yahweh.png", { frameWidth: textureWidth });
+        this.load.spritesheet("azrael", "./sprite/azrael.png", { frameWidth: textureWidth });
+        this.load.spritesheet("celestine", "./sprite/celestine.png", { frameWidth: textureWidth });
+        this.load.spritesheet("gabriel", "./sprite/gabriel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("uziel", "./sprite/uziel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("yahweh", "./sprite/yahweh.png", { frameWidth: textureWidth });
     }
 
     create() {
@@ -270,7 +270,7 @@ export class GameScene extends Phaser.Scene {
                     return;
                 }
                 return;
-            } else if(this.items[toX][toY].type === "lyre" && !this.items[toX + moveX][toY + moveY]) {
+            } else if(this.items[toX][toY].type === "lyre" && !this.items[toX + moveX][toY + moveY] && this.items[toX + moveX]) {
                 if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
                 if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
                 if(stepNum <= 0) {
