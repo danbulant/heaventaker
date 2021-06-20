@@ -5,7 +5,7 @@
     import { characters } from "../stores/characters.js";
     import { gameActive, menuActive } from "../stores/gameActive";
     import { toRoman } from "../utils";
-import Keypress from "../stores/keypress.svelte";
+    import Keypress from "../stores/keypress.svelte";
 
     export var current;
     export var page;
@@ -32,7 +32,7 @@ import Keypress from "../stores/keypress.svelte";
     function select(i) {
         if(!allowSwitch) return;
         var next;
-        if(d.flags && d.flags.includes("chapters")) {
+        if(d.flags && d.flags.includes("chapters") && chaptersDone.length) {
             const keys = Object.keys(chapters);
             console.log(keys);
             if(!keys[i]) return;
