@@ -1,7 +1,7 @@
 <script>
     import { dialog } from "../stores/dialog";
     import { gameActive, menuActive, page } from "../stores/gameActive";
-import Keypress from "../stores/keypress.svelte";
+    import Keypress from "../stores/keypress.svelte";
     import Button from "./button.svelte";
 
     const buttons = [

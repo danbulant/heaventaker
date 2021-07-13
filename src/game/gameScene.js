@@ -15,6 +15,11 @@ menuActive.subscribe(t => {
     paused = t;
 });
 
+var fpsBuffer = [];
+export const shared = {
+    lastUpdate: null
+};
+
 export class GameScene extends Phaser.Scene {
     constructor(map) {
         super({
@@ -35,7 +40,10 @@ export class GameScene extends Phaser.Scene {
             map: (string | null | {
                 type: string,
                 direction?: number
-            })[][]
+            })[][],
+            fieldFlags: {
+                stopsClouds?: boolean
+            }[][]
         }} */
         this.map = map;
         steps.set(map.steps);
@@ -66,6 +74,7 @@ export class GameScene extends Phaser.Scene {
         this.load.spritesheet("gabriel", "./sprite/gabriel.png", { frameWidth: textureWidth });
         this.load.spritesheet("uziel", "./sprite/uziel.png", { frameWidth: textureWidth });
         this.load.spritesheet("yahweh", "./sprite/yahweh.png", { frameWidth: textureWidth });
+        this.load.bitmapFont("gem", "fonts/gem/font.png", "fonts/gem/font.xml");
     }
 
     create() {
@@ -109,7 +118,18 @@ export class GameScene extends Phaser.Scene {
          * @type {{ type: string, direction?: number, sprite: Phaser.GameObjects.Sprite, animated: boolean }[][]}
          */
         this.items = new Array(this.map.map.length);
+        /**
+         * @type {{ type: string, direction?: number, sprite: Phaser.GameObjects.Sprite, animated: boolean, shouldPropagate?: boolean }[][]}
+         */
         this.winds = new Array(this.map.map.length);
+        /**
+         * @type {{ type: string, direction?: number, sprite: Phaser.GameObjects.Sprite, animated: boolean, shouldPropagate?: boolean }[][]}
+         */
+        this.sourceWinds = new Array(this.map.map.length);
+        /**
+         * @type {{ stopsClouds?: boolean }[][]}
+         */
+        this.flags = new Array(this.map.map.length);
         for(var y in this.map.map) {
             var row = this.map.map[y];
             
@@ -117,11 +137,25 @@ export class GameScene extends Phaser.Scene {
                 if(!this.items[x]) {
                     this.items[x] = new Array(row.length);
                     this.winds[x] = new Array(row.length);
+                    this.sourceWinds[x] = new Array(row.length);
+                    this.flags[x] = new Array(this.map.fieldFlags && this.map.fieldFlags[y] && this.map.fieldFlags[y].length || 0);
+                }
+                if(this.map.fieldFlags && this.map.fieldFlags[y] && this.map.fieldFlags[y][x]) {
+                    this.flags[x][y] = this.map.fieldFlags[y][x];
+                } else {
+                    this.flags[x][y] = null;
                 }
                 var item = row[x];
                 if(!item) {
                     this.items[x][y] = null;
                     this.winds[x][y] = null;
+                    this.sourceWinds[x][y] = null;
+                    continue;
+                }
+                if(item.type === null) {
+                    this.items[x][y] = item;
+                    this.winds[x][y] = null;
+                    this.sourceWinds[x][y] = null;
                     continue;
                 }
                 if(typeof item === "string") {
@@ -188,8 +222,16 @@ export class GameScene extends Phaser.Scene {
                 } else {
                     this.items[x][y] = null;
                     this.winds[x][y] = item;
+                    this.sourceWinds[x][y] = item;
                 }
             }
+        }
+        this.fpsText = this.add.bitmapText(0, this.container.height / 2, "gem", "");
+        this.container.add(this.fpsText);
+        this.propagateWinds();
+        if(window.location.hostname === "localhost") {
+            this.physics.config.debug = true;
+            this.physics.world.createDebugGraphic();
         }
     }
 
@@ -223,7 +265,9 @@ export class GameScene extends Phaser.Scene {
 
     isWindActive(x, y) {
         if(!this.winds[x] || !this.winds[x][y]) return false;
+        if(x < 0 || y < 0 || x > this.map.size.x || y > this.map.size.y) throw new Error(`Wind out of bounds at ${x} ${y} in map ${this.map.background}`);
         var mov = this.getMovementFromDirection(this.winds[x][y].direction);
+        if(mov.x === 0 && mov.y === 0) throw new Error(`Wind without direction at ${x} ${y} in map ${this.map.background}`);
         if(this.items[x][y] && this.items[x][y].type !== "wind" && this.items[x][y].type !== "spawn") {
             return false;
         }
@@ -233,11 +277,13 @@ export class GameScene extends Phaser.Scene {
         return this.isWindActive(x-mov.x, y-mov.y);
     }
 
+    /**
+     * Checks if the sprite at X Y can be destroyed, and if yes, destroys it.
+     */
     tryDestroy(toX, toY) {
         if(this.items[toX][toY].destroyable) {
             this.items[toX][toY].sprite.alpha = 0;
             this.items[toX][toY].sprite.destroy();
-            console.log("Destroyed", this.items[toX][toY].sprite);
             this.items[toX][toY] = null;
             this.canMove = false;
             setTimeout(() => {
@@ -247,12 +293,102 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
+    /**
+     * Propagates winds as needed.
+     */
+    propagateWinds() {
+        const buf = [];
+        for(let x in this.winds) {
+            if(!this.sourceWinds[x]) continue;
+            for(let y in this.winds[x]) {
+                if(this.winds[x][y] && !this.sourceWinds[x][y]) {
+                    buf.push(this.winds[x][y].sprite);
+                }
+            }
+        }
+        this.winds = new Array(this.items.length);
+        for(let x in this.items) {
+            this.winds[x] = new Array(this.map.size.x);
+        }
+        console.log("Winds", this.winds.length);
+        for(let x in this.items) {
+            x = parseInt(x);
+            for(let y in this.items[x]) {
+                y = parseInt(y);
+                if(!this.sourceWinds[x] || !this.sourceWinds[x][y]) continue;
+                const item = this.sourceWinds[x][y];
+                if(item.type !== "wind") continue;
+                this.winds[x][y] = item;
+                if(!item.shouldPropagate) continue;
+                const move = this.getMovementFromDirection(item.direction);
+                if(!move.x && !move.y) throw new Error(`Wind must have a valid direction (at ${x} ${y} of map ${this.map.background}`);
+
+                if(this.items[x] && this.items[x][y] && this.items[x][y].type) {
+                    // hide the wind
+                    this.sourceWinds[x][y].sprite.setAlpha(0);
+                    // don't propagate if source hidden under wind.
+                    continue;
+                } else {
+                    if(this.sourceWinds[x][y].sprite.alpha !== 1)
+                        this.sourceWinds[x][y].sprite.setAlpha(1);
+                }
+                var type = item.type;
+                var direction = item.direction;
+
+                while(x < this.map.size.x && y < this.map.size.y && x > 0 && y > 0) {
+                    x += move.x;
+                    y += move.y;
+
+                    if(this.items[x] && this.items[x][y] && this.items[x][y].type) break;
+                    if((this.winds[x] && this.winds[x][y]) || (this.sourceWinds[x] && this.sourceWinds[x][y])) continue;
+
+                    if(!this.items[x] || !this.items[x][y] || !this.items[x][y].type) {                        
+                        let item = { type: "wind", direction: direction };
+                        var sprite = buf.pop();
+                        if(!sprite) {
+                            var sprite = this.add.sprite(x * this.map.px, y * this.map.px);
+                            item.animated = true;
+                            if(!this.anims.exists(type)) {
+                                this.anims.create({
+                                    key: type,
+                                    frames: this.anims.generateFrameNumbers(type, {
+                                        start: 0
+                                    }),
+                                    frameRate: 10,
+                                    repeat: -1
+                                });
+                            }
+                            sprite.play(type);
+                            sprite.scale = this.map.px / 100;
+                            sprite.setRotation(item.direction * Math.PI / 2);
+                            this.grid.add(sprite);
+                        } else {
+                            sprite.x = x * this.map.px;
+                            sprite.y = y * this.map.px;
+                            sprite.setRotation(item.direction * Math.PI / 2);
+                        }
+                        item.sprite = sprite;
+                        item.sprite.setDepth(0);
+                        this.children.queueDepthSort();
+                        if(!this.winds[x]) this.winds[x] = [];
+                        this.winds[x][y] = item;
+                    }
+
+                    if(this.flags[x] && this.flags[x][y] && this.flags[x][y].stopsClouds) break;
+                }
+            }
+        }
+        for(const unused of buf) {
+            unused.destroy();
+        }
+    }
+
     movePlayer(moveX, moveY, fromWind = false) {
         if(!this.canMove) return;
         var toX = this.player.x + moveX;
         var toY = this.player.y + moveY;
         if(toX > this.map.size.x - 1 || toX < 0 || toY > this.map.size.y - 1 || toY < 0) return;
-        if(this.items[toX][toY]) {
+        if(this.items[toX][toY] && this.items[toX][toY].type) {
             if(this.items[toX][toY].type === "key") {
                 this.items[toX][toY].sprite.destroy();
                 this.items[toX][toY] = null;
@@ -262,6 +398,7 @@ export class GameScene extends Phaser.Scene {
                 if(!this.player.hasKey) return;
                 this.items[toX][toY].sprite.destroy();
                 this.items[toX][toY] = null;
+                this.propagateWinds();
             } else if(this.items[toX][toY].type !== "lyre" && this.tryDestroy(toX, toY)) {
                 steps.update(t => --t);
                 if(stepNum <= 0) {
@@ -269,8 +406,9 @@ export class GameScene extends Phaser.Scene {
                     this.createMap();
                     return;
                 }
+                this.propagateWinds();
                 return;
-            } else if(this.items[toX][toY].type === "lyre" && !this.items[toX + moveX][toY + moveY] && this.items[toX + moveX]) {
+            } else if(this.items[toX] && this.items[toX][toY].type === "lyre" && this.items[toX + moveX] && (!this.items[toX + moveX][toY + moveY] || !this.items[toX + moveX][toY + moveY].type)) {
                 if(toX + moveX > this.map.size.x - 1|| toX + moveX < 0 || toY + moveY > this.map.size.y - 1 || toY + moveY < 0) return;
                 if(this.items[toX + moveX][toY + moveY] && this.items[toX + moveX][toY + moveY].type !== "wind") return;
                 if(stepNum <= 0) {
@@ -281,6 +419,7 @@ export class GameScene extends Phaser.Scene {
                 this.canMove = false;
                 this.move(toX, toY, toX + moveX, toY + moveY, () => {
                     this.canMove = true;
+                    this.propagateWinds();
                 });
                 return;
             } else return;
@@ -298,7 +437,7 @@ export class GameScene extends Phaser.Scene {
             this.canMove = true;
             this.player.x = toX;
             this.player.y = toY;
-            if(!fromWind) this.checkAngel();
+            if(!fromWind && !this.winds[toX] && !this.winds[toX][toY]) this.checkAngel();
         });
     }
 
@@ -314,11 +453,14 @@ export class GameScene extends Phaser.Scene {
 
     canMove = true;
 
-    update() {
+    update(time, delta) {
+        shared.lastUpdate = time;
+        fpsBuffer.push(delta);
+        if(fpsBuffer.length > 200) fpsBuffer.shift();
+
         this.container.x = this.cameras.main.width / 2 - this.container.width / 2;
         this.container.y = this.cameras.main.height / 2 - this.container.height / 2;
         if(keys.wasKeyPressed("pause")) {
-            console.log("Paused");
             menuActive.set(!paused);
         }
 
@@ -326,13 +468,21 @@ export class GameScene extends Phaser.Scene {
 
         // debug mode
         if(keys.wasKeyPressed("debug")) {
-            console.log("Toggled debug mode");
             this.physics.config.debug = !this.physics.config.debug;
+            console.log("Toggled debug mode", this.physics.config.debug ? "on" : "off");
             if(this.physics.config.debug) this.physics.world.createDebugGraphic();
             this.physics.world.drawDebug = this.physics.config.debug;
-            if(!this.physics.config.debug) this.physics.world.debugGraphic.destroy();
+            if(!this.physics.config.debug) {
+                this.physics.world.debugGraphic.destroy();
+                this.fpsText.setText("");
+            }
         }
+        if(keys.isKeyPressed("debug") && keys.isKeyPressed("debugCrash")) throw new Error("Debug crash");
 
+        if(this.physics.config.debug) {
+            const fps = 1 / (fpsBuffer.reduce((a, b) => a + b, 0) / fpsBuffer.length) * 1000;
+            this.fpsText.setText(`${fps.toFixed(2)} FPS`);
+        }
 
         if(this.isWindActive(this.player.x, this.player.y)) {
             var movement = this.getMovementFromDirection(this.winds[this.player.x][this.player.y].direction);

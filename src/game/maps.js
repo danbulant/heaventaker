@@ -1,7 +1,8 @@
-function wind(direction) {
+function wind(direction, shouldPropagate) {
     return {
         type: "wind",
-        direction
+        direction,
+        shouldPropagate: !!shouldPropagate
     }
 }
 
@@ -13,6 +14,16 @@ const pillar = {
 const cloud = {
     type: "cloud",
     destroyable: true
+}
+
+const stopcloud = {
+    stopsClouds: true,
+    type: null
+}
+
+function sc(type) {
+    if(typeof type === "string") type = { type };
+    type.stopsClouds = true;
 }
 
 /**
@@ -27,7 +38,11 @@ const cloud = {
             map: {
                 x: number,
                 y: number,
-                type: string
+                type: string,
+                shouldPropagate?: boolean
+            }[],
+            fieldFlags: {
+                stopsClouds?: boolean
             }[]
         }
     }
@@ -102,9 +117,18 @@ export const maps = {
             [null       , cloud     , null      , "lyre"    , "lock"    , "barrier" ],
             ["barrier"  , null      , "lyre"    , null      , null      , "barrier" ],
             ["barrier"  , cloud     , "lyre"    , null      , null      , "barrier" , "barrier" ],
-            ["spawn"    , null      , null      , wind(2)   , cloud     , "lyre"    , "key"     ],
-            ["barrier"  , "barrier" , wind(2)   , "lyre"    ],
+            ["spawn"    , null      , null      , wind(2, 1), cloud     , "lyre"    , "key"     ],
+            ["barrier"  , "barrier" , wind(2, 1), "lyre"    , null      , null      , null      ],
             [null       , "barrier" , null      , null      , null      , "barrier" , "barrier" ]
+        ],
+        fieldFlags: [
+            [],
+            [],
+            [],
+            [null   , null  , null  , null  , stopcloud ],
+            [],
+            [null   , null  , null  , null  , stopcloud ],
+            [null   , null  , null  , null  , null      , stopcloud]
         ]
     }
 };

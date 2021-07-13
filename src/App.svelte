@@ -7,6 +7,7 @@
 	import Game from "./pages/game.svelte";
 	import { gameActive, menuActive, page } from "./stores/gameActive";
 	import Menu from "./pages/menu.svelte";
+import CrashHandler from "./pages/crashHandler.svelte";
 
 	var preloads = new Map;
 	function preload(url) {
@@ -59,6 +60,8 @@
 
 <svelte:head>
 	<title>Heaventaker</title>
+	<meta name="tags" value="heaventaker, Game, free, online, helltaker, fan">
+	<meta name="description" value="Heaventaker, a free online open-source helltaker fangame. Solve puzzles and get your angle harem.">
 </svelte:head>
 
 {#if width < height / 1080 * 615 * 2}
@@ -79,6 +82,8 @@
 <Overlay active={!dialog[$page].map || !$gameActive}>
 	<Dialog bind:current={$page} />
 </Overlay>
+
+<CrashHandler />
 
 <style>
 	.warning {
