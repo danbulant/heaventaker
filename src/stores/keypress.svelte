@@ -6,7 +6,6 @@
     function keydown(e) {
         if(!keys.has(e.key)) {
             dispatch("keypress", e);
-            console.log("keypress");
             keys.add(e.key);
         }
     }
