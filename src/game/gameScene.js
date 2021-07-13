@@ -228,6 +228,7 @@ export class GameScene extends Phaser.Scene {
         }
         this.fpsText = this.add.bitmapText(0, this.container.height / 2, "gem", "");
         this.container.add(this.fpsText);
+        this.propagateWinds(true);
         this.propagateWinds();
         if(window.location.hostname === "localhost") {
             this.physics.config.debug = true;
@@ -296,7 +297,7 @@ export class GameScene extends Phaser.Scene {
     /**
      * Propagates winds as needed.
      */
-    propagateWinds() {
+    propagateWinds(force) {
         const buf = [];
         for(let x in this.winds) {
             if(!this.sourceWinds[x]) continue;
@@ -310,7 +311,6 @@ export class GameScene extends Phaser.Scene {
         for(let x in this.items) {
             this.winds[x] = new Array(this.map.size.x);
         }
-        console.log("Winds", this.winds.length);
         for(let x in this.items) {
             x = parseInt(x);
             for(let y in this.items[x]) {
@@ -339,7 +339,7 @@ export class GameScene extends Phaser.Scene {
                     x += move.x;
                     y += move.y;
 
-                    if(this.items[x] && this.items[x][y] && this.items[x][y].type) break;
+                    if(!force && this.items[x] && this.items[x][y] && this.items[x][y].type) break;
                     if((this.winds[x] && this.winds[x][y]) || (this.sourceWinds[x] && this.sourceWinds[x][y])) continue;
 
                     if(!this.items[x] || !this.items[x][y] || !this.items[x][y].type) {                        
@@ -366,6 +366,7 @@ export class GameScene extends Phaser.Scene {
                             sprite.x = x * this.map.px;
                             sprite.y = y * this.map.px;
                             sprite.setRotation(item.direction * Math.PI / 2);
+                            sprite.setAlpha(1);
                         }
                         item.sprite = sprite;
                         item.sprite.setDepth(0);
@@ -379,7 +380,7 @@ export class GameScene extends Phaser.Scene {
             }
         }
         for(const unused of buf) {
-            unused.destroy();
+            unused.setAlpha(0);
         }
     }
 
