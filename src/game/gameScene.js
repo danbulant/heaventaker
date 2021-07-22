@@ -438,7 +438,7 @@ export class GameScene extends Phaser.Scene {
             this.canMove = true;
             this.player.x = toX;
             this.player.y = toY;
-            if(!fromWind && !this.winds[toX] && !this.winds[toX][toY]) this.checkAngel();
+            if(!fromWind && (!this.winds[toX] || !this.winds[toX][toY])) this.checkAngel();
         });
     }
 
