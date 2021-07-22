@@ -74,7 +74,6 @@ export const dialog = [{
     chapterStart: "uriel",
     background: "/sprite/backg.webp",
     character: "Uriel",
-    pose: "side_normal",
     text: "Ummm... I don't want to be rude so just leave or go to the main gate.",
     map: "uriel",
     buttons: [{
@@ -88,6 +87,7 @@ export const dialog = [{
     name: "uriel_restart",
     background: "/sprite/backg.webp",
     character: "Uriel",
+    pose: "semi_angry",
     text: "Really dude? Well if you insist, let's start from the beggining",
     next: "uriel_failure"
 }, {
