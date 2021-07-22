@@ -1,16 +1,16 @@
 export const characters = [{
     name: "Uriel",
-    art: "/sprite/uriel_normal.webp",
+    art: "/sprite/uriel_idle.webp",
     title: "the gate guardian",
     poses: {
         side_normal: "/sprite/uriel_side_normal.webp",
-        side_happy: "/sprite/uriel_side_happy.webp",
-        bat: "/sprite/uriel_bat.webp",
+        side_happy: "/sprite/uriel_happy.webp",
+        bat: "/sprite/uriel_angry.webp",
         chibi: "/sprite/uriel.gif"
     }
 }, {
     name: "Michael",
-    art: "/sprite/michael_normal.webp",
+    art: "/sprite/michael_idle.webp",
     title: "the high marshal",
     poses: {
         wings: "/sprite/michael_wings.webp",
@@ -19,11 +19,11 @@ export const characters = [{
     }
 }, {
     name: "Uziel",
-    art: "/sprite/uziel_normal.webp",
+    art: "/sprite/uziel_idle.webp",
     title: "the chief commissar",
     poses: {
         happy: "/sprite/uziel_happy.webp",
-        dead: "/sprite/uziel_dead.webp"
+        dead: "/sprite/uziel_angry.webp"
     }
 }, {
     name: "Gabriel",
