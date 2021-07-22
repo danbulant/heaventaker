@@ -3,7 +3,7 @@ export const characters = [{
     art: "/sprite/uriel_idle.webp",
     title: "the gate guardian",
     poses: {
-        semi_angry: "/sprite/uriel_normal/webp",
+        semi_angry: "/sprite/uriel_normal.webp",
         side_happy: "/sprite/uriel_happy.webp",
         bat: "/sprite/uriel_angry.webp",
         chibi: "/sprite/uriel.gif"
@@ -13,7 +13,7 @@ export const characters = [{
     art: "/sprite/michael_idle.webp",
     title: "the high marshal",
     poses: {
-        wings: "/sprite/michael_wings.webp",
+        wings: "/sprite/michael_angry.webp",
         happy: "/sprite/michael_happy.webp",
         chibi: "/sprite/uriel.gif"
     }
