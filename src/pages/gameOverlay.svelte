@@ -4,9 +4,9 @@
 </script>
 
 <div class="overlay">
-    <img src="./sprite/game_overlay.webp" alt="" class="left" draggable={false}>
+    <img src="./images/levels/overlay.webp" alt="" class="left" draggable={false}>
     <div class="left-info">{steps}</div>
-    <img src="./sprite/game_overlay.webp" alt="" class="right" draggable={false}>
+    <img src="./images/levels/overlay.webp" alt="" class="right" draggable={false}>
     <div class="right-info">{chapter}</div>
 </div>
 
