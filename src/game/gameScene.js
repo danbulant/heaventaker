@@ -57,23 +57,26 @@ export class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.setBaseURL();
-        this.load.image("level1", "./sprite/level1.webp");
-        this.load.image("level2", "./sprite/level2.webp");
-        this.load.image("level3", "./sprite/level3.webp");
-        this.load.image("lyre", "./sprite/lyre.webp");
-        this.load.image("cloud", "./sprite/clouds.webp");
-        this.load.image("pillar", "./sprite/pillar.webp");
-        this.load.image("key", "./sprite/key.webp");
-        this.load.image("lock", "./sprite/lock.webp");
-        this.load.spritesheet("wind", "./sprite/wind.png", { frameWidth: textureWidth });
-        this.load.spritesheet("uriel", "./sprite/uriel.png", { frameWidth: textureWidth });
-        this.load.spritesheet("michael", "./sprite/michael.png", { frameWidth: textureWidth });
-        this.load.spritesheet("spawn", "./sprite/yahweh.png", { frameWidth: textureWidth });
-        this.load.spritesheet("azrael", "./sprite/azrael.png", { frameWidth: textureWidth });
-        this.load.spritesheet("celestine", "./sprite/celestine.png", { frameWidth: textureWidth });
-        this.load.spritesheet("gabriel", "./sprite/gabriel.png", { frameWidth: textureWidth });
-        this.load.spritesheet("uziel", "./sprite/uziel.png", { frameWidth: textureWidth });
-        this.load.spritesheet("yahweh", "./sprite/yahweh.png", { frameWidth: textureWidth });
+        this.load.image("level1", "./images/levels/1/level.webp");
+        this.load.image("level2", "./images/levels/2/level.webp");
+        this.load.image("level3", "./images/levels/3/level.webp");
+        this.load.image("lyre", "./images/levels/lyre.webp");
+        this.load.image("cloud", "./images/levels/clouds.webp");
+        this.load.image("pillar", "./images/levels/pillar.webp");
+        this.load.image("key", "./images/levels/key.webp");
+        this.load.image("lock", "./images/levels/lock.webp");
+        this.load.spritesheet("wind", "./images/sprites/wind.png", { frameWidth: textureWidth });
+        this.load.spritesheet("spawn", "./images/sprites/taker/dance.png", { frameWidth: textureWidth });
+        this.load.spritesheet("dance", "./images/sprites/taker/dance.png", { frameWidth: textureWidth });
+        this.load.spritesheet("move", "./images/sprites/taker/move.png", { frameWidth: textureWidth });
+        this.load.spritesheet("kick", "./images/sprites/taker/kick.png", { frameWidth: textureWidth });
+        this.load.spritesheet("uriel", "./images/sprites/angels_chibi/uriel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("michael", "./images/sprites/angels_chibi/michael.png", { frameWidth: textureWidth });
+        this.load.spritesheet("azrael", "./images/sprites/angels_chibi/azrael.png", { frameWidth: textureWidth });
+        this.load.spritesheet("celestine", "./images/sprites/angels_chibi/celestine.png", { frameWidth: textureWidth });
+        this.load.spritesheet("gabriel", "./images/sprites/angels_chibi/gabriel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("uziel", "./images/sprites/angels_chibi/uziel.png", { frameWidth: textureWidth });
+        this.load.spritesheet("yahweh", "./images/sprites/angels_chibi/yahweh.png", { frameWidth: textureWidth });
         this.load.bitmapFont("gem", "fonts/gem/font.png", "fonts/gem/font.xml");
     }
 

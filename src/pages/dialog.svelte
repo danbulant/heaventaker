@@ -49,15 +49,15 @@
                 art = null;
                 background = null;
                 showText = false;
-                art = "/sprite/death1.webp";
+                art = "/sprite/death/1.webp";
                 failure = true;
                 (async() => {
                     await asleep(150);
-                    art = "/sprite/death2.webp";
+                    art = "/sprite/death/2.webp";
                     await asleep(150);
-                    art = "/sprite/death3.webp";
+                    art = "/sprite/death/3.webp";
                     await asleep(150);
-                    art = "/sprite/death4.webp";
+                    art = "/sprite/death/4.webp";
                     allowSwitch = true;
                     failureShown = true;
                 })();
@@ -158,10 +158,10 @@
 <div class="dialog" class:failure>
     <div class="background">
         {#if background}
-            <img src="./{background}" alt="" class="full" draggable={false}>
+            <img src="./images/backgrounds/{background}.webp" alt="" class="full" draggable={false}>
         {/if}
         {#if art}
-            <img src="./{art}" alt="" class="character" draggable={false}>
+            <img src="./images/angels/{art}.webp" alt="" class="character" draggable={false}>
         {/if}
     </div>
     {#if showText}

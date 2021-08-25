@@ -12,7 +12,7 @@
         max-width: 800px;
         position: relative;
         font-size: clamp(1rem, 4vh - 0.2rem, 1.5rem);
-        background: url("../sprite/button2.webp");
+        background: url("../images/button/middle.webp");
         background-size: auto 100%;
         background-repeat: repeat-x;
         padding: 5px 5px;
@@ -27,7 +27,7 @@
         content: "";
         height: 1.72em;
         width: 2.56em;
-        background: url("../sprite/button1.webp");
+        background: url("../images/button/start.webp");
         background-size: contain;
         left: -2.56em;
         top: 0;
@@ -37,7 +37,7 @@
         content: "";
         height: 1.72em;
         width: 2.56em;
-        background: url("../sprite/button1.webp");
+        background: url("../images/button/start.webp");
         background-size: contain;
         right: -2.56em;
         top: 0;

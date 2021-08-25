@@ -23,7 +23,7 @@ export const chapters = {
  */
 export const dialog = [{
     name: "start",
-    background: "/sprite/menu.webp",
+    background: "menu",
     text: "Hello and welcome on your way to heaven. My name is Hadraniel, and I'm the one appointed to you at the moment.",
     next: "start2",
     buttons: [{
@@ -32,25 +32,25 @@ export const dialog = [{
     }]
 }, {
     name: "start2",
-    background: "/sprite/menu.webp",
+    background: "menu",
     character: "Hadraniel",
     text: "Sure. Oh and before you go there, just a warning: don't even think about trying to seduce the angels. It doesn't work here the same as down there.",
     next: "start3"
 }, {
     name: "start3",
-    background: "/sprite/menu.webp",
+    background: "menu",
     character: "Hadraniel",
     text: "Wait where are you going? That's not the way to the main gate-",
     next: "uriel_entrance"
 }, {
     name: "restart",
-    background: "/sprite/menu.webp",
+    background: "menu",
     character: "Hadraniel",
     text: "Welcome back. What do you desire now?",
     next: "menu"
 }, {
     name: "menu",
-    background: "/sprite/menu.webp",
+    background: "menu",
     character: "Hadraniel",
     text: "",
     buttons: [{
@@ -63,7 +63,7 @@ export const dialog = [{
     flags: ["menu", "nosave"]
 }, {
     name: "chapters",
-    background: "/sprite/menu.webp",
+    background: "menu",
     character: "Hadraniel",
     text: "Which chapter would you like to solve?",
     alt: "You must first complete a chapter to be able to solve it.",
@@ -72,7 +72,7 @@ export const dialog = [{
 }, {
     name: "uriel_entrance",
     chapterStart: "uriel",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Uriel",
     text: "Ummm... I don't want to be rude so just leave or go to the main gate.",
     map: "uriel",
@@ -85,14 +85,14 @@ export const dialog = [{
     }]
 }, {
     name: "uriel_restart",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Uriel",
     pose: "semi_angry",
     text: "Really dude? Well if you insist, let's start from the beggining",
     next: "uriel_failure"
 }, {
     name: "uriel_failure", 
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Uriel",
     text: "You picked the wrong gate fool.",
     next: "uriel_entrance",
@@ -101,7 +101,7 @@ export const dialog = [{
 }, {
     name: "uriel_success",
     chapter: "uriel",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Uriel",
     text: "Well since it already got boring around here, and how can I say no to pancakes.",
     flags: ["success"],
@@ -110,7 +110,7 @@ export const dialog = [{
 }, {
     name: "michael_heretic",
     chapterStart: "michael",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Michael",
     text: "How did you... You know what I don't even care. Heretic like you needs to be punished.",
     map: "michael",
@@ -124,7 +124,7 @@ export const dialog = [{
 }, {
     name: "michael_success",
     chapter: "michael",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Michael",
     pose: "happy",
     text: "Really? Well, big man: if you survive this whole ordeal, prepare a room and we shall see how into this shit you really are",
@@ -132,7 +132,7 @@ export const dialog = [{
     next: "uziel_start"
 }, {
     name: "michael_failure",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Michael",
     text: "I also have something to offer: eat shit and die.",
     pose: "wings",
@@ -140,7 +140,7 @@ export const dialog = [{
     next: "michael_heretic"
 }, {
     name: "uziel_start",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Uziel",
     chapterStart: "uziel",
     map: "uziel",
@@ -154,7 +154,7 @@ export const dialog = [{
     }]
 }, {
     name: "uziel_failure",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Uziel",
     text: "I can't beat the living shit out of you without getting closer.",
     next: "uziel_start",
@@ -163,7 +163,7 @@ export const dialog = [{
 }, {
     name: "uziel_success",
     chapter: "uziel",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Uziel",
     pose: "happy",
     text: "That had to be the madest and stupidest thing i ever heard. Yes, i must see how this whole thing will end up.",
@@ -171,7 +171,7 @@ export const dialog = [{
     next: "gabriel_start"
 }, {
     name: "gabriel_start",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Gabriel",
     chapterStart: "gabriel",
     text: "Hello sir. My name is Gabriel, Heaven's administration department. How may I help you?",
@@ -185,7 +185,7 @@ export const dialog = [{
 }, {
     name: "gabriel_success",
     chapter: "gabriel",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Gabriel",
     text: "That... That would be lovely actually. Could you buy me some coffee? After my department got defund I can't even afford it.",
     next: "azrael_start",
@@ -193,26 +193,26 @@ export const dialog = [{
     flags: ["success"]
 }, {
     name: "gabriel_fail",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Gabriel",
     text: "Oh... you looking for that type of girl, don't worry I know just the place.",
     next: "helltaker",
     pose: "sad"
 }, {
     name: "helltaker",
-    background: "/sprite/gabriel_background.webp",
+    background: "hell",
     text: "...",
     next: "helltaker2",
     flags: ["helltaker"]
 }, {
     name: "helltaker2",
-    background: "/sprite/gabriel_background.webp",
+    background: "hell",
     text: "What are you doing here?",
     next: "gabriel_start",
     flags: ["failure"]
 }, {
     name: "azrael_start",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Azrael",
     chapterStart: "azrael",
     text: "Oh my my, what do we have here a lost soul wandering around heaven with an intent lust for angel.",
@@ -227,7 +227,7 @@ export const dialog = [{
     name: "azrael_fail",
     next: "azrael_start",
     character: "Azrael",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     flags: ["failure"],
     text: "And with that another horny soul bite the dust.",
     pose: "angry"
@@ -235,7 +235,7 @@ export const dialog = [{
     name: "azrael_win",
     chapter: "azrael",
     next: "restart",
-    background: "/sprite/backg.webp",
+    background: "heaven",
     character: "Azrael",
     pose: "happy",
     flags: ["success"],

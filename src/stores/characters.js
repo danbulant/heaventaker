@@ -1,47 +1,55 @@
 export const characters = [{
     name: "Uriel",
-    art: "/sprite/uriel_idle.webp",
+    art: "uriel_idle",
     title: "the gate guardian",
     poses: {
-        semi_angry: "/sprite/uriel_normal.webp",
-        side_happy: "/sprite/uriel_happy.webp",
-        bat: "/sprite/uriel_angry.webp",
-        chibi: "/sprite/uriel.gif"
+        semi_angry: "uriel_normal",
+        side_happy: "uriel_happy",
+        bat: "uriel_angry"
     }
 }, {
     name: "Michael",
-    art: "/sprite/michael_idle.webp",
+    art: "michael_idle",
     title: "the high marshal",
     poses: {
-        wings: "/sprite/michael_angry.webp",
-        happy: "/sprite/michael_happy.webp",
-        chibi: "/sprite/uriel.gif"
+        wings: "michael_angry",
+        happy: "michael_happy"
     }
 }, {
     name: "Uziel",
-    art: "/sprite/uziel_idle.webp",
+    art: "uziel_idle",
     title: "the chief commissar",
     poses: {
-        happy: "/sprite/uziel_happy.webp",
-        dead: "/sprite/uziel_angry.webp"
+        happy: "uziel_happy",
+        dead: "uziel_angry"
     }
 }, {
     name: "Gabriel",
-    art: "/sprite/gabriel_idle.webp",
+    art: "gabriel_idle",
     title: "the administrator",
     poses: {
-        happy: "/sprite/gabriel_win.webp",
-        sad: "/sprite/gabriel_fail.webp"
+        happy: "gabriel_win",
+        sad: "gabriel_fail"
     }
 }, {
     name: "Azrael",
-    art: "/sprite/azrael_idle.webp",
+    art: "azrael_idle",
     title: "the great executioner",
     poses: {
-        happy: "/sprite/azrael_happy.webp",
-        angry: "/sprite/azrael_angry.webp"
+        happy: "azrael_happy",
+        angry: "azrael_angry"
     }
 }, {
     name: "Hadraniel",
     title: "the seraphim"
+}, {
+    name: "Yahweh",
+    title: "the all-seeing",
+    art: "yahweh_idle",
+    poses: {
+        angry1: "yahweh_angry1",
+        angry2: "yahweh_angry2",
+        confuse: "yahweh_confuse",
+        happy: "yahweh_happy"
+    }
 }];
