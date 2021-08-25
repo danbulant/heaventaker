@@ -8,6 +8,7 @@ async function convertFolder({ folder, production, base, out, ref }) {
     const promises = [];
     for(const file of await fs.readdir(folder)) {
         const loc = path.join(folder, file);
+        console.log(loc, file);
         const stat = await fs.stat(loc);
         if(stat.isDirectory()) {
             promises.push(convertFolder({ folder: loc, production, base, out }));
@@ -41,7 +42,7 @@ export function makeImages({ folders, production }) {
             await fs.mkdir(out, { recursive: true });
             const ref = this;
             folders = folders.map(folder => path.join(base, folder));
-            await Promise.all(folders.map(folder => convertFolder({ folder, production, base, out, ref })));
+            await Promise.all(folders.map(folder => convertFolder({ folder, production, base, out, ref }).catch(e => console.warn(e))));
         }
     };
 };
