@@ -17,12 +17,12 @@
 	}
 	for(let character of characters) {
 		if(character.art) {
-			preload("." + character.art); // preload art
+			preload("./images/angels/" + character.art + ".webp"); // preload art
 		}
 	}
 	for(let d of dialog) {
 		if(d.background) {
-			preload("." + d.background); // preload art
+			preload("./images/backgrounds/" + d.background + ".webp"); // preload art
 		}
 	}
 
