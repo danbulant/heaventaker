@@ -38,7 +38,7 @@ export function makeImages({ folders, production }) {
             webp.grant_permission();
             
             const base = path.join(__dirname, "images/png");
-            const out = path.join(__dirname, "public/sprite");
+            const out = path.join(__dirname, "public/images");
             await fs.mkdir(out, { recursive: true });
             const ref = this;
             folders = folders.map(folder => path.join(base, folder));
