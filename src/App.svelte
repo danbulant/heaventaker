@@ -1,13 +1,13 @@
 <script>
 	import Dialog from "./pages/dialog.svelte";
-	import { Howl } from "howler";
 	import Overlay from "./pages/overlay.svelte";
 	import { characters } from "./stores/characters.js";
 	import { dialog } from "./stores/dialog.js";
 	import Game from "./pages/game.svelte";
 	import { gameActive, menuActive, page } from "./stores/gameActive";
 	import Menu from "./pages/menu.svelte";
-import CrashHandler from "./pages/crashHandler.svelte";
+	import CrashHandler from "./pages/crashHandler.svelte";
+	import { startPlaying } from "./stores/music";
 
 	var preloads = new Map;
 	function preload(url) {
@@ -24,17 +24,6 @@ import CrashHandler from "./pages/crashHandler.svelte";
 		if(d.background) {
 			preload("." + d.background); // preload art
 		}
-	}
-
-	var music = new Howl({
-		src: "./sound/mittsies-departure.mp3",
-		html5: true,
-		loop: true,
-		autoplay: true
-	});
-
-	function startPlaying(e) {
-		if(!music.playing()) music.play();
 	}
 
 	$: console.log(dialog[$page]);

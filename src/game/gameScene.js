@@ -3,6 +3,7 @@ import { gameActive, menuActive, page } from "../stores/gameActive";
 import { steps } from "../stores/step";
 import { keys } from "./input";
 import { dialog } from "../stores/dialog.js";
+import { Music } from "../stores/music";
 
 const textureWidth = 100;
 
@@ -29,22 +30,6 @@ export class GameScene extends Phaser.Scene {
                 default: "arcade"
             }
         });
-        /** @type {{
-            background: string,
-            sprite: string,
-            next: string,
-            offset: { x: number, y: nunber },
-            size: { x: number, y: number },
-            px: number,
-            steps: number,
-            map: (string | null | {
-                type: string,
-                direction?: number
-            })[][],
-            fieldFlags: {
-                stopsClouds?: boolean
-            }[][]
-        }} */
         this.map = map;
         steps.set(map.steps);
     }
@@ -179,12 +164,12 @@ export class GameScene extends Phaser.Scene {
                         var sprite = this.add.sprite(x * this.map.px, y * this.map.px);
                         item.animated = true;
                         if(!this.anims.exists(type)) {
+                            const frames = this.anims.generateFrameNumbers(type);
+                            const rate = (60 / Music.current.bpm);
                             this.anims.create({
                                 key: type,
-                                frames: this.anims.generateFrameNumbers(type, {
-                                    start: 0
-                                }),
-                                frameRate: 10,
+                                frames,
+                                frameRate: frames.length / rate * Music.current.scale,
                                 repeat: -1
                             });
                         }
