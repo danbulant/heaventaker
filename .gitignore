@@ -5,3 +5,4 @@
 .DS_Store
 /public/service-worker.js
 /public/service-worker.js.map
+/public/sprite
