@@ -1,8 +1,10 @@
 # Heaventaker
 
+![Azrael](images/png/screenshots/azrael.gif)
+
 A fan-made game inspired by Helltaker. Art by u/hohodo.
 
-![Characters](public/sprite/characters.webp)
+![Characters](images/png/screenshots/characters.png)
 
 ## Play it
 
