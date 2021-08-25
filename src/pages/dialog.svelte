@@ -18,7 +18,7 @@
     $: character = characters.find(c => c.name === d.character);
 
     var art;
-    $: art = !character ? null : d.character_art || d.pose ? character.poses[d.pose] : character.art;
+    $: art = !character ? null : "/images/angels/" + (d.character_art || d.pose ? character.poses[d.pose] : character.art) + ".webp";
     var background;
     $: background = d.background;
 
@@ -49,15 +49,15 @@
                 art = null;
                 background = null;
                 showText = false;
-                art = "/sprite/death/1.webp";
+                art = "/images/death/1.webp";
                 failure = true;
                 (async() => {
                     await asleep(150);
-                    art = "/sprite/death/2.webp";
+                    art = "/images/death/2.webp";
                     await asleep(150);
-                    art = "/sprite/death/3.webp";
+                    art = "/images/death/3.webp";
                     await asleep(150);
-                    art = "/sprite/death/4.webp";
+                    art = "/images/death/4.webp";
                     allowSwitch = true;
                     failureShown = true;
                 })();
@@ -70,7 +70,7 @@
         failure = false;
         current = next;
         d = dialog[current];
-        art = !character ? null : (d.character_art || d.pose && character.poses ? character.poses[d.pose] : character.art);
+        art = !character ? null : "/images/angels/" + (d.character_art || d.pose && character.poses ? character.poses[d.pose] : character.art) + ".webp";
         background = d.background;
         if(d.map) {
             setTimeout(() => {
@@ -161,7 +161,7 @@
             <img src="./images/backgrounds/{background}.webp" alt="" class="full" draggable={false}>
         {/if}
         {#if art}
-            <img src="./images/angels/{art}.webp" alt="" class="character" draggable={false}>
+            <img src=".{art}" alt="" class="character" draggable={false}>
         {/if}
     </div>
     {#if showText}
