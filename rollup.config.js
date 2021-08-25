@@ -6,7 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import workbox from 'rollup-plugin-workbox';
 import replace from "@rollup/plugin-replace";
-import { makeImages } from './imageMaker';
+import { makeImages, makeSprites } from './imageMaker';
 
 const production = !process.env.ROLLUP_WATCH;
 // List of folders from images/png to convert to webp and save into public/images
@@ -63,6 +63,7 @@ export default [{
 		}),
 		commonjs(),
 		makeImages({ folders: imageFolders, production }),
+		makeSprites({ production }),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated

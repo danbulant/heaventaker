@@ -23,6 +23,7 @@
     "workbox-strategies": "^6.1.1"
   },
   "dependencies": {
+    "canvas": "^2.8.0",
     "hammerjs": "^2.0.8",
     "howler": "^2.2.1",
     "phaser": "^3.54.0",

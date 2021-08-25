@@ -2,6 +2,7 @@ import webp from "webp-converter";
 import fs from "fs/promises";
 import fsSync from "fs";
 import path from "path";
+import { createCanvas, loadImage } from "canvas";
 
 async function convertFolder({ folder, production, base, out, ref }) {
     const promises = [];
@@ -18,9 +19,7 @@ async function convertFolder({ folder, production, base, out, ref }) {
             if(fsSync.existsSync(targetFile)) continue;
             
             var target = path.join(out, rel);
-            console.log("target", target, path.basename(target));
             var dir = target.substr(0, target.length - path.basename(target).length);
-            console.log("dir", dir);
             if(!fsSync.existsSync(dir)) await fs.mkdir(dir, { recursive: true });
             
             promises.push(webp.cwebp(loc, targetFile, "-q 80"));
@@ -44,5 +43,53 @@ export function makeImages({ folders, production }) {
             folders = folders.map(folder => path.join(base, folder));
             await Promise.all(folders.map(folder => convertFolder({ folder, production, base, out, ref })));
         }
+    };
 };
-};
+
+async function getTree({ directory }) {
+    const dirs = [];
+    for(const item of await fs.readdir(directory)) {
+        const loc = path.join(directory, item);
+        const stat = await fs.stat(loc);
+        if(stat.isDirectory()) dirs.push(getTree({ directory: loc }));
+    }
+    return dirs.length ? (await Promise.all(dirs)).flat(10) : directory;
+}
+
+async function makeSprite({ directory, base, out }) {
+    const rel = directory.substr(base.length);
+    const loc = path.join(out, rel) + ".png";
+    const files = (await fs.readdir(directory)).sort((a, b) => parseInt(a) - parseInt(b));
+    
+    const canvas = createCanvas(files.length * 100, 100);
+    const ctx = canvas.getContext("2d");
+    await Promise.all(
+        files.map(async (t, i) => {
+            const image = await loadImage(path.join(directory, t));
+            ctx.drawImage(image, i * 100, 0, 100, 100);
+        })
+    );
+
+    await fs.mkdir(path.join(out, rel.substr(0, rel.length - path.basename(rel).length)), { recursive: true });
+    const target = fsSync.createWriteStream(loc);
+    const stream = canvas.createPNGStream();
+    stream.pipe(target);
+    return new Promise((resolve) => {
+        target.on("finish", () => {
+            resolve();
+        });
+    });
+}
+
+export function makeSprites({ production }) {
+    return {
+        name: "sprite-maker",
+        generateBundle: async function makeSprites() {
+            const base = path.join(__dirname, "images/png/sprites");
+            const out = path.join(__dirname, "public/images/sprites");
+            await fs.mkdir(out, { recursive: true });
+            const tree = await getTree({ directory: base });
+            await Promise.all(tree.map(directory => makeSprite({ directory, base, out })));
+        }
+    }
+}
