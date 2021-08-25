@@ -26,6 +26,7 @@
     "hammerjs": "^2.0.8",
     "howler": "^2.2.1",
     "phaser": "^3.54.0",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "webp-converter": "^2.3.3"
   }
 }

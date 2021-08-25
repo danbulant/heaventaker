@@ -6,8 +6,11 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import workbox from 'rollup-plugin-workbox';
 import replace from "@rollup/plugin-replace";
+import { makeImages } from './imageMaker';
 
 const production = !process.env.ROLLUP_WATCH;
+// List of folders from images/png to convert to webp and save into public/sprite
+const imageFolders = ["angels", "backgrounds", "button", "death", "levels"];
 
 function serve() {
 	let server;
@@ -59,6 +62,7 @@ export default [{
 			dedupe: ['svelte']
 		}),
 		commonjs(),
+		makeImages({ folders: imageFolders, production }),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
