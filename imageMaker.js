@@ -59,6 +59,7 @@ async function getTree({ directory }) {
 async function makeSprite({ directory, base, out }) {
     const rel = directory.substr(base.length);
     const loc = path.join(out, rel) + ".png";
+    if(fsSync.existsSync(loc)) return;
     const files = (await fs.readdir(directory)).sort((a, b) => parseInt(a) - parseInt(b));
     
     const canvas = createCanvas(files.length * 100, 100);
