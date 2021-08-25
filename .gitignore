@@ -7,3 +7,4 @@
 /public/service-worker.js.map
 /public/images
 pnpm-lock.yaml
+package-lock.json
