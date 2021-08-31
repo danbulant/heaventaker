@@ -176,7 +176,6 @@ export class GameScene extends Phaser.Scene {
                         }
                         sprite.play(type);
                     } else {
-                        console.log("sprite", x, y, type);
                         sprite = this.add.sprite(x * this.map.px, y * this.map.px, type);
                         item.animated = false;
                     }
@@ -277,7 +276,6 @@ export class GameScene extends Phaser.Scene {
      */
     tryDestroy(toX, toY) {
         if(this.items[toX][toY].destroyable) {
-            console.log("Destroying", toX, toY, this.items[toX][toY].sprite.x, this.items[toX][toY].sprite.y, this.items[toX][toY].sprite);
             this.items[toX][toY].sprite.alpha = 0;
             this.items[toX][toY].sprite.destroy();
             this.items[toX][toY] = null;
