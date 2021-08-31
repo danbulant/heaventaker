@@ -9,6 +9,7 @@ export const chapters = {
 /**
  * @type {{
  *  name: string,
+ *  background: "menu" | "heaven" | "hell",
  *  character: typeof import("./characters").characters[number]["name"],
  *  text: string,
  *  next?: string,
@@ -105,6 +106,48 @@ export const dialog = [{
     text: "Well since it already got boring around here, and how can I say no to pancakes.",
     flags: ["success"],
     pose: "side_happy",
+    next: "side_1_1"
+}, {
+    name: "side_1_1",
+    chapter: "uriel",
+    background: "heaven",
+    character: "Uriel",
+    text: "Quick, hide over there. Patrol is coming.",
+    next: "side_1_2"
+}, {
+    name: "side_1_2",
+    chapter: "uriel",
+    background: "menu",
+    character: "Hadraniel",
+    text: "Uriel, did you see any wandering human here?",
+    next: "side_1_3"
+}, {
+    name: "side_1_3",
+    chapter: "uriel",
+    background: "heaven",
+    character: "Uriel",
+    text: "Ah Hadraniel, what a unpleasant surprise seeing you here polluting my view.",
+    next: "side_1_4"
+}, {
+    name: "side_1_4",
+    chapter: "uriel",
+    background: "menu",
+    character: "Hadraniel",
+    text: "Look I dont't want to fight, just answer the question.",
+    next: "side_1_5"
+}, {
+    name: "side_1_5",
+    chapter: "uriel",
+    background: "heaven",
+    character: "Uriel",
+    text: "Saw him, shoo him alway, where did he go? Not my job.\nNow please gratefully and quickly get the fuck out of my sight.",
+    next: "side_1_6"
+}, {
+    name: "side_1_6",
+    chapter: "uriel",
+    background: "menu",
+    character: "Hadraniel",
+    text: "Thanks, I guess...",
     next: "michael_heretic"
 }, {
     name: "michael_heretic",
