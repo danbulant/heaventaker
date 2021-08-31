@@ -1,5 +1,25 @@
-export const characters = [{
-    name: "Uriel",
+/**
+ * Identity function. Coerces string/number literals to literal types.
+ * @template {string | number} T
+ * @param {T} v
+ * @return {T}
+ */
+function c(v) {
+    return v;
+}
+  
+/**
+ * Creates a tuple (array) from the given arguments.
+ * @template {any[]} T
+ * @param {T} v
+ * @return {T}
+ */
+function t(...v) {
+    return v;
+}
+
+export const characters = t({
+    name: c("Uriel"),
     art: "uriel_idle",
     title: "the gate guardian",
     poses: {
@@ -8,7 +28,7 @@ export const characters = [{
         bat: "uriel_angry"
     }
 }, {
-    name: "Michael",
+    name: c("Michael"),
     art: "michael_idle",
     title: "the high marshal",
     poses: {
@@ -16,7 +36,7 @@ export const characters = [{
         happy: "michael_happy"
     }
 }, {
-    name: "Uziel",
+    name: c("Uziel"),
     art: "uziel_idle",
     title: "the chief commissar",
     poses: {
@@ -24,7 +44,7 @@ export const characters = [{
         dead: "uziel_angry"
     }
 }, {
-    name: "Gabriel",
+    name: c("Gabriel"),
     art: "gabriel_idle",
     title: "the administrator",
     poses: {
@@ -32,7 +52,7 @@ export const characters = [{
         sad: "gabriel_fail"
     }
 }, {
-    name: "Azrael",
+    name: c("Azrael"),
     art: "azrael_idle",
     title: "the great executioner",
     poses: {
@@ -40,10 +60,10 @@ export const characters = [{
         angry: "azrael_angry"
     }
 }, {
-    name: "Hadraniel",
+    name: c("Hadraniel"),
     title: "the seraphim"
 }, {
-    name: "Yahweh",
+    name: c("Yahweh"),
     title: "the all-seeing",
     art: "yahweh_idle",
     poses: {
@@ -52,4 +72,4 @@ export const characters = [{
         confuse: "yahweh_confuse",
         happy: "yahweh_happy"
     }
-}];
+});

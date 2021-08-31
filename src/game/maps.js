@@ -27,7 +27,7 @@ function sc(type) {
 }
 
 /**
- * @type {
+ * @type {{
         [key: string]: {
             background: string,
             sprite: string,
@@ -45,7 +45,7 @@ function sc(type) {
                 stopsClouds?: boolean
             }[]
         }
-    }
+    }}
  */
 export const maps = {
     uriel: {

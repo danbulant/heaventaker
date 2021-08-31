@@ -9,16 +9,15 @@ export const chapters = {
 /**
  * @type {{
  *  name: string,
- * background: string,
- * character: string,
- * text: string,
- * next?: string,
- * pose?: string,
- * map?: string,
- * chapter?: keyof typeof chapters,
- * chapterStart?: keyof typeof chapters,
- * buttons: { text: string, next: string }[],
- * flags?: string[]
+ *  character: typeof import("./characters").characters[number]["name"],
+ *  text: string,
+ *  next?: string,
+ *  pose?: string,
+ *  map?: "uriel" | "michael" | "uziel",
+ *  chapter?: keyof typeof chapters,
+ *  chapterStart?: keyof typeof chapters,
+ *  buttons: { text: string, next: string }[],
+ *  flags?: ("nosave" | "chapters" | "menu" | "success" | "failure")[]
  * }[]}
  */
 export const dialog = [{
