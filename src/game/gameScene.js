@@ -412,6 +412,7 @@ export class GameScene extends Phaser.Scene {
                     this.createMap();
                     return;
                 }
+                steps.update(t => --t);t
                 this.canMove = false;
                 this.move(toX, toY, toX + moveX, toY + moveY, () => {
                     this.canMove = true;
