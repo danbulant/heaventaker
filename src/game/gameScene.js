@@ -214,10 +214,12 @@ export class GameScene extends Phaser.Scene {
                 }
             }
         }
+        
         this.fpsText = this.add.bitmapText(0, this.container.height / 2, "gem", "");
         this.container.add(this.fpsText);
         this.propagateWinds(true);
         this.propagateWinds();
+
         if(window.location.hostname === "localhost") {
             this.physics.config.debug = true;
             this.physics.world.createDebugGraphic();
@@ -426,7 +428,6 @@ export class GameScene extends Phaser.Scene {
             this.canMove = true;
             this.player.x = toX;
             this.player.y = toY;
-            if(!fromWind && (!this.winds[toX] || !this.winds[toX][toY])) this.checkAngel();
         });
     }
 
@@ -476,6 +477,8 @@ export class GameScene extends Phaser.Scene {
         if(this.isWindActive(this.player.x, this.player.y)) {
             var movement = this.getMovementFromDirection(this.winds[this.player.x][this.player.y].direction);
             this.movePlayer(movement.x, movement.y, true);
+        } else {
+            this.checkAngel();
         }
 
         var movement = { x: 0, y: 0};
