@@ -133,23 +133,23 @@ export class GameScene extends Phaser.Scene {
                 } else {
                     this.flags[x][y] = null;
                 }
-                var item = row[x];
-                if(!item) {
+                if(!row[x]) {
                     this.items[x][y] = null;
                     this.winds[x][y] = null;
                     this.sourceWinds[x][y] = null;
                     continue;
+                }
+                var item = {};
+                if(typeof row[x] === "string") {
+                    item.type = row[x];
+                } else {
+                    Object.assign(item, row[x]);
                 }
                 if(item.type === null) {
                     this.items[x][y] = item;
                     this.winds[x][y] = null;
                     this.sourceWinds[x][y] = null;
                     continue;
-                }
-                if(typeof item === "string") {
-                    item = {
-                        type: item
-                    }
                 }
                 item.direction = item.direction ?? 0;
                 y = parseInt(y);
@@ -160,8 +160,9 @@ export class GameScene extends Phaser.Scene {
                         type = this.map.sprite;
                         item.texture = type;
                     }
+                    let sprite;
                     if(this.textures.get(type).frameTotal > 1) {
-                        var sprite = this.add.sprite(x * this.map.px, y * this.map.px);
+                        sprite = this.add.sprite(x * this.map.px, y * this.map.px);
                         item.animated = true;
                         if(!this.anims.exists(type)) {
                             const frames = this.anims.generateFrameNumbers(type);
@@ -175,13 +176,16 @@ export class GameScene extends Phaser.Scene {
                         }
                         sprite.play(type);
                     } else {
-                        var sprite = this.add.sprite(x * this.map.px, y * this.map.px, type);
+                        console.log("sprite", x, y, type);
+                        sprite = this.add.sprite(x * this.map.px, y * this.map.px, type);
                         item.animated = false;
                     }
                     sprite.scale = this.map.px / 100;
                     sprite.setRotation(item.direction * Math.PI / 2);
                     this.grid.add(sprite);
-                    item.sprite = sprite;
+                    Object.defineProperty(item, "sprite", {
+                        value: sprite
+                    });
 
                     if(item.type === "spawn") {
                         /** @type {{ x: number, y: number, hasKey: boolean }} */
@@ -273,6 +277,7 @@ export class GameScene extends Phaser.Scene {
      */
     tryDestroy(toX, toY) {
         if(this.items[toX][toY].destroyable) {
+            console.log("Destroying", toX, toY, this.items[toX][toY].sprite.x, this.items[toX][toY].sprite.y, this.items[toX][toY].sprite);
             this.items[toX][toY].sprite.alpha = 0;
             this.items[toX][toY].sprite.destroy();
             this.items[toX][toY] = null;
