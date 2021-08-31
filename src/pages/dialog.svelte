@@ -78,7 +78,7 @@
             }, 300);
         }
         console.log("selected", d);
-        if(!d.flags || !d.flags.includes("nosave")) localStorage.setItem("dialog-page", next);
+        if(!d.flags || !d.flags.includes("nosave")) localStorage.setItem("dialog-page", dialog[next].name);
         if(d.chapter) {
             if(!chaptersDone.includes(d.chapter)) {
                 chaptersDone.push(d.chapter);
