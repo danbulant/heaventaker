@@ -61,5 +61,6 @@
         width: calc(100vw - 40px);
         height: calc(100vh - 40px);
         z-index: 999;
+        overflow: auto;
     }
 </style>

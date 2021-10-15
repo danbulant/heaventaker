@@ -43,9 +43,17 @@
         outerHeight = window.outerHeight;
         outerWidth = window.outerWidth;
     }
+
+	function clicked() {
+		startPlaying();
+
+		if(window.innerHeight < 768) {
+			document.body.requestFullscreen({ navigationUI: "hide" });
+		}
+	}
 </script>
 
-<svelte:window on:click={startPlaying} on:resize={resize} on:keydown={startPlaying} />
+<svelte:window on:click={clicked} on:resize={resize} on:keydown={startPlaying} />
 
 <svelte:head>
 	<title>Heaventaker</title>
