@@ -29,7 +29,7 @@
     }
 
     var activeButton = -1;
-    function select(i) {
+    async function select(i) {
         if(!allowSwitch) return;
         var next;
         if(d.flags && d.flags.includes("chapters") && chaptersDone.length) {
@@ -51,16 +51,14 @@
                 showText = false;
                 art = "/images/death/1.webp";
                 failure = true;
-                (async() => {
-                    await asleep(150);
-                    art = "/images/death/2.webp";
-                    await asleep(150);
-                    art = "/images/death/3.webp";
-                    await asleep(150);
-                    art = "/images/death/4.webp";
-                    allowSwitch = true;
-                    failureShown = true;
-                })();
+                await asleep(150);
+                art = "/images/death/2.webp";
+                await asleep(150);
+                art = "/images/death/3.webp";
+                await asleep(150);
+                art = "/images/death/4.webp";
+                allowSwitch = true;
+                failureShown = true;
                 return;
             }
         }
@@ -69,6 +67,9 @@
         failureShown = false;
         failure = false;
         current = next;
+        if(dialog[next].map) {
+            await asleep(500);
+        }
         d = dialog[current];
         art = !character ? null : "/images/angels/" + (d.character_art || d.pose && character.poses ? character.poses[d.pose] : character.art) + ".webp";
         background = d.background;

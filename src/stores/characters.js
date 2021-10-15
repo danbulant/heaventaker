@@ -25,7 +25,7 @@ export const characters = t({
     poses: {
         semi_angry: "uriel_normal",
         side_happy: "uriel_happy",
-        bat: "uriel_angry"
+        bat: "uriel_unhappy"
     }
 }, {
     name: c("Michael"),

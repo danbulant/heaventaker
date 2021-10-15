@@ -125,6 +125,10 @@ class KeyHandler {
             this.keysWasPressed.set("down", true);
         });
         this.hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammertime.get('pinch').set({ enable: true })
+        this.hammertime.on("pinchin", (ev) => {
+            this.keysWasPressed.set("pause", true);
+        });
     }
     mountHandlers() {
         for(var { type, listener, options } of this.handlers) {

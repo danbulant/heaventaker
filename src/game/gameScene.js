@@ -62,6 +62,7 @@ export class GameScene extends Phaser.Scene {
         this.load.spritesheet("gabriel", "./images/sprites/angels_chibi/gabriel.png", { frameWidth: textureWidth });
         this.load.spritesheet("uziel", "./images/sprites/angels_chibi/uziel.png", { frameWidth: textureWidth });
         this.load.spritesheet("yahweh", "./images/sprites/angels_chibi/yahweh.png", { frameWidth: textureWidth });
+        this.load.spritesheet("kick", "./images/sprites/taker/kick.png", { frameWidth: textureWidth });
         this.load.bitmapFont("gem", "fonts/gem/font.png", "fonts/gem/font.xml");
     }
 
@@ -88,6 +89,16 @@ export class GameScene extends Phaser.Scene {
         this.container.scale = Math.min(xScale, yScale);
     }
 
+    createAnimationFor(type, length) {
+        console.log("Created anim", type);
+        const frames = this.anims.generateFrameNumbers(type);
+        this.anims.create({
+            key: type,
+            frames,
+            frameRate: frames.length / (length / 1000)
+        });
+    }
+
     createMap() {
         console.log(this.map);
 
@@ -101,6 +112,9 @@ export class GameScene extends Phaser.Scene {
         this.background = this.add.image(this.container.width / 2, this.container.height / 2, this.map.background);
         this.container.add(this.background);
         this.container.add(this.grid);
+
+        this.createAnimationFor("move", 400);
+        this.createAnimationFor("kick", 400);
 
         /**
          * @type {{ type: string, direction?: number, sprite: Phaser.GameObjects.Sprite, animated: boolean }[][]}
@@ -262,7 +276,7 @@ export class GameScene extends Phaser.Scene {
         if(x < 0 || y < 0 || x > this.map.size.x || y > this.map.size.y) throw new Error(`Wind out of bounds at ${x} ${y} in map ${this.map.background}`);
         var mov = this.getMovementFromDirection(this.winds[x][y].direction);
         if(mov.x === 0 && mov.y === 0) throw new Error(`Wind without direction at ${x} ${y} in map ${this.map.background}`);
-        if(this.items[x][y] && this.items[x][y].type !== "wind" && this.items[x][y].type !== "spawn") {
+        if(this.items[x] && this.items[x][y] && this.items[x][y].type !== "wind" && this.items[x][y].type !== "spawn") {
             return false;
         }
         if(!this.winds[x-mov.x] || !this.winds[x-mov.x][y-mov.y]) {
@@ -382,6 +396,13 @@ export class GameScene extends Phaser.Scene {
         var toX = this.player.x + moveX;
         var toY = this.player.y + moveY;
         if(toX > this.map.size.x - 1 || toX < 0 || toY > this.map.size.y - 1 || toY < 0) return;
+
+        if(toX < this.player.x) { // moving left
+            this.items[this.player.x][this.player.y].sprite.flipX = true;
+        } else if(toX > this.player.x) { // moving right
+            this.items[this.player.x][this.player.y].sprite.flipX = false;
+        }
+        
         if(this.items[toX][toY] && this.items[toX][toY].type) {
             if(this.items[toX][toY].type === "key") {
                 this.items[toX][toY].sprite.destroy();
@@ -394,6 +415,10 @@ export class GameScene extends Phaser.Scene {
                 this.items[toX][toY] = null;
                 this.propagateWinds();
             } else if(this.items[toX][toY].type !== "lyre" && this.tryDestroy(toX, toY)) {
+                this.items[this.player.x][this.player.y].sprite.play("kick");
+                setTimeout(() => {
+                    this.items[this.player.x][this.player.y].sprite.play("spawn");
+                }, 399)
                 steps.update(t => --t);
                 if(stepNum <= 0) {
                     this.unload();
@@ -412,9 +437,11 @@ export class GameScene extends Phaser.Scene {
                 }
                 // steps.update(t => --t);
                 this.canMove = false;
+                this.items[this.player.x][this.player.y].sprite.play("kick");
                 this.move(toX, toY, toX + moveX, toY + moveY, () => {
                     this.canMove = true;
                     this.propagateWinds();
+                    this.items[this.player.x][this.player.y].sprite.play("spawn");
                 });
                 return;
             } else return;
@@ -428,10 +455,12 @@ export class GameScene extends Phaser.Scene {
         if(!fromWind) {
             steps.update(t => --t);
         }
+        this.items[this.player.x][this.player.y].sprite.play("move");
         this.move(this.player.x, this.player.y, toX, toY, () => {
             this.canMove = true;
             this.player.x = toX;
             this.player.y = toY;
+            this.items[this.player.x][this.player.y].sprite.play("spawn");
         });
     }
 
