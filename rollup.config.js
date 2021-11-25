@@ -12,6 +12,8 @@ const production = !process.env.ROLLUP_WATCH;
 // List of folders from images/png to convert to webp and save into public/images
 const imageFolders = ["angels", "backgrounds", "button", "death", "levels"];
 
+console.log(production ? "PROD MODE" : "DEV MODE");
+
 function serve() {
 	let server;
 
@@ -21,7 +23,9 @@ function serve() {
 
 	return {
 		writeBundle() {
+			console.log("wb");
 			if (server) return;
+			console.log("Starting server");
 			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev', '--host', '0.0.0.0'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
 				shell: true
