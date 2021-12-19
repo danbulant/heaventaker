@@ -1,4 +1,5 @@
 export const chapters = {
+    prologue: 0,
     uriel: 1,
     michael: 2,
     uziel: 3,
@@ -9,7 +10,7 @@ export const chapters = {
 /**
  * @type {{
  *  name: string,
- *  background: "menu" | "heaven" | "hell",
+ *  background: "menu" | "heaven" | "hell" | "prologue1" | "prologue2" | "prologue3" | "prologue4",
  *  character: typeof import("./characters").characters[number]["name"],
  *  text: string,
  *  next?: string,
@@ -18,7 +19,7 @@ export const chapters = {
  *  chapter?: keyof typeof chapters,
  *  chapterStart?: keyof typeof chapters,
  *  buttons: { text: string, next: string }[],
- *  flags?: ("nosave" | "chapters" | "menu" | "success" | "failure")[]
+ *  flags?: ("nosave" | "chapters" | "menu" | "success" | "failure" | "prologue")[]
  * }[]}
  */
 export const dialog = [{
@@ -55,7 +56,7 @@ export const dialog = [{
     text: "",
     buttons: [{
         text: "Start",
-        next: "uriel_entrance"
+        next: "prologue1"
     }, {
         text: "Chapter select",
         next: "chapters"
@@ -69,6 +70,31 @@ export const dialog = [{
     alt: "You must first complete a chapter to be able to solve it.",
     next: "menu",
     flags: ["chapters", "nosave"]
+}, {
+    name: "prologue1",
+    chapterStart: "prologue",
+    background: "prologue1",
+    text: "The successful corruption of a certain angel gives Lucifer, the CEO of hell, an idea.",
+    next: "prologue2",
+    flags: ["prologue"]
+}, {
+    name: "prologue2",
+    background: "prologue2",
+    text: "She sent you to heaven with the help of a certain nearly corrupted angel in order to find a cure, but in reality she sent you to bring a few more angels back so she could \"befriend\" them.",
+    next: "prologue3",
+    flags: ["prologue"]
+}, {
+    name: "prologue3",
+    background: "prologue3",
+    text: "But you decided to go big or go home and kick down the front gate of heaven to take the big league archangel or even the master of heaven herself.",
+    next: "prologue4",
+    flags: ["prologue"]
+}, {
+    name: "prologue4",
+    background: 'prologue4',
+    text: "But after seeing the first angel, you decide to run to the back gate like Lucifer originally planned.",
+    next: "uriel_entrance",
+    flags: ["prologue"]
 }, {
     name: "uriel_entrance",
     chapterStart: "uriel",

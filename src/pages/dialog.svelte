@@ -160,7 +160,11 @@
 <div class="dialog" class:failure>
     <div class="background">
         {#if background}
-            <img src="./images/backgrounds/{background}.webp" alt="" class="full" draggable={false}>
+            {#if d.flags && d.flags.includes("prologue")}
+                <img src="./images/backgrounds/{background}.webp" alt="" class="prologue-bg" draggable={false}>
+            {:else}
+                <img src="./images/backgrounds/{background}.webp" alt="" class="full" draggable={false}>
+            {/if}
         {/if}
         {#if art}
             <img src=".{art}" alt="" class="character" draggable={false}>
@@ -171,7 +175,7 @@
             <div class="data">
                 {#if character}
                     <h1>{character.name}, {character.title}</h1>
-                {:else}
+                {:else if !d.flags || !d.flags.includes("prologue")}
                     <h1>???</h1>
                 {/if}
                 {#if d.text}
@@ -189,8 +193,7 @@
                     {#each d.buttons as button, i}
                         <Button active={i === activeButton} on:click={() => select(i)}>{button.text}</Button>
                     {/each}
-                {/if}
-                {#if d && d.flags && d.flags.includes("chapters") && chaptersDone.length}
+                {:else if d && d.flags && d.flags.includes("chapters") && chaptersDone.length}
                     <div class="chapters">
                         {#each Object.keys(chapters) as chapter, i}
                             <div class="chapter" class:selected={i === activeButton} on:click={() => select(i)} class:active={chaptersDone && chaptersDone.includes(chapter)}>
@@ -198,6 +201,8 @@
                             </div>
                         {/each}
                     </div>
+                {:else}
+                    
                 {/if}
             </div>
             {#if success}
@@ -243,11 +248,12 @@
         max-height: 50vh;
     }
     .text p {
+        margin-top: 10px;
         font-size: inherit;
     }
     h1 {
         color: #FFFCBE;
-        margin: 10px 0;
+        margin: 10px 0 0 0;
         text-align: center;
         letter-spacing: 2px;
     }
@@ -331,6 +337,10 @@
         height: 80%;
         width: 100%;
         object-fit: none;
+    }
+    .background .prologue-bg {
+        height: 90%;
+        box-shadow: -5px -5px 0 0 #DFCA96;
     }
     .background .character {
         height: 100%;
