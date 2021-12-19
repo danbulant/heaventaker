@@ -462,6 +462,7 @@ export class GameScene extends Phaser.Scene {
             this.player.y = toY;
             this.items[this.player.x][this.player.y].sprite.play("spawn");
         });
+        return true;
     }
 
     checkAngel() {
@@ -509,7 +510,9 @@ export class GameScene extends Phaser.Scene {
 
         if(this.isWindActive(this.player.x, this.player.y)) {
             var movement = this.getMovementFromDirection(this.winds[this.player.x][this.player.y].direction);
-            this.movePlayer(movement.x, movement.y, true);
+            if(!this.movePlayer(movement.x, movement.y, true)) {
+                this.checkAngel();
+            }
         } else {
             this.checkAngel();
         }
