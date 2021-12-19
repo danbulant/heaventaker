@@ -93,6 +93,8 @@ class KeyHandler {
             };
         });
 
+        this.hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammertime.get('pinch').set({ enable: true });
         this.hammertime.on("tap", (ev) => {
             var { x, y } = ev.center;
             x -= innerWidth / 2;
@@ -124,8 +126,6 @@ class KeyHandler {
         this.hammertime.on('swipedown', (ev) => {
             this.keysWasPressed.set("down", true);
         });
-        this.hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-        this.hammertime.get('pinch').set({ enable: true })
         this.hammertime.on("pinchin", (ev) => {
             this.keysWasPressed.set("pause", true);
         });
