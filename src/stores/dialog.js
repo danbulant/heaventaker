@@ -42,7 +42,7 @@ export const dialog = [{
     background: "menu",
     character: "Hadraniel",
     text: "Wait where are you going? That's not the way to the main gate-",
-    next: "uriel_entrance"
+    next: "prologue1"
 }, {
     name: "restart",
     background: "menu",
