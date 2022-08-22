@@ -7,7 +7,8 @@
 	import { gameActive, menuActive, page } from "./stores/gameActive";
 	import Menu from "./pages/menu.svelte";
 	import CrashHandler from "./pages/crashHandler.svelte";
-	import { startPlaying } from "./stores/music";
+	import { startPlaying, isPlaying } from "./stores/music";
+	import { fade } from "svelte/transition";
 
 	var preloads = new Map;
 	function preload(url) {
@@ -69,6 +70,12 @@
 	</div>
 {/if}
 
+{#if !$isPlaying}
+	<div class="play-notif" transition:fade={{ duration: 300 }}>
+		Click anywhere for sound.
+	</div>
+{/if}
+
 {#if dialog[$page].map}
 	<Game bind:current={$page} />
 {/if}
@@ -98,5 +105,15 @@
 		display: inline-block;
 		vertical-align: middle;
 		line-height: normal;
+	}
+	.play-notif {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		text-align: center;
+		background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.0));
+		z-index: 98;
+		font-size: x-large;
 	}
 </style>
