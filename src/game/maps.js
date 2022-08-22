@@ -74,7 +74,7 @@ export const maps = {
     },
     michael: {
         background: "level2",
-        sprite: "uriel",
+        sprite: "michael",
         next: "michael_heretic",
         size: {
             x: 11,
