@@ -31,14 +31,16 @@ async function convertFolder({ folder, production, base, out, ref }) {
     return await Promise.all(promises);
 }
 
+let dirname = __dirname;
+
 export function makeImages({ folders, production }) {
 	return {
         name: "image-maker",
         generateBundle: async function makeImages() {
             webp.grant_permission();
             
-            const base = path.join(__dirname, "images/png");
-            const out = path.join(__dirname, "public/images");
+            const base = path.join(dirname, "images/png");
+            const out = path.join(dirname, "public/images");
             await fs.mkdir(out, { recursive: true });
             const ref = this;
             folders = folders.map(folder => path.join(base, folder));
@@ -87,8 +89,8 @@ export function makeSprites({ production }) {
     return {
         name: "sprite-maker",
         generateBundle: async function makeSprites() {
-            const base = path.join(__dirname, "images/png/sprites");
-            const out = path.join(__dirname, "public/images/sprites");
+            const base = path.join(dirname, "images/png/sprites");
+            const out = path.join(dirname, "public/images/sprites");
             await fs.mkdir(out, { recursive: true });
             const tree = await getTree({ directory: base });
             await Promise.all(tree.map(directory => makeSprite({ directory, base, out })));
