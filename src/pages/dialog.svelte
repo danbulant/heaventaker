@@ -143,6 +143,7 @@
     var textElement;
     $: {
         if(textElement) {
+            // don't try to fix this animation, svelte transitions won't help.
             d; // everytime d is changed
             textElement.classList.remove("animate");
             void textElement.offsetWidth;
@@ -179,6 +180,7 @@
                     <h1>???</h1>
                 {/if}
                 {#if d.text}
+                    <!-- Don't try to fix this animation. I tried. Multiple times. Using svelte transitions won't help. -->
                     <p class="animate" bind:this={textElement}>
                         {#if d.flags && d.flags.includes("chapters") && chaptersDone.length === 0}
                             {d.alt}
@@ -201,8 +203,10 @@
                             </div>
                         {/each}
                     </div>
-                {:else}
-                    
+                {:else if !success}
+                    <div class="next-center">
+                        <img src="/images/button/next.webp" alt="">
+                    </div>
                 {/if}
             </div>
             {#if success}
@@ -345,5 +349,15 @@
     .background .character {
         height: 100%;
         bottom: 0px;
+    }
+    .next-center {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .next-center img {
+        width: 60px;
+        height: 60px;
     }
 </style>
